@@ -1,3 +1,21 @@
-<p>
-  login works!
-</p>
+<div class="container-login">
+  <mat-card>
+  <form ngSubmit="formLogin()">
+    <div class="login">
+  
+      <mat-form-field>
+        <input matInput placeholder="Enter your email" [formControl]="email" required>
+        <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <input matInput placeholder="Enter your password" [formControl]="password" [type]="hide ? 'password' : 'text'">
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </mat-form-field>
+  
+      <button mat-flat-button color="primary" (click)="formLogin()">Send</button>
+      
+    </div>
+  </form>
+  </mat-card>
+  </div>

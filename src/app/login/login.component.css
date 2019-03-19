@@ -1,0 +1,32 @@
+.login {
+    display: flex;
+    flex-direction: column;
+  }
+  .login > * {
+    width: 100%;
+  }
+  
+  .login-right-align {
+    text-align: right;
+  }
+  
+  input.login-right-align::-webkit-outer-spin-button,
+  input.login-right-align::-webkit-inner-spin-button {
+    display: none;
+  }
+  
+  input.login-right-align {
+    -moz-appearance: textfield;
+  }
+  
+  .container-login {
+      padding-top: 5vh;
+      padding-left: 1vw;
+    }
+  
+  mat-card {
+      max-width: 500px;
+      margin: 0 auto;
+      align-self: center;
+  }
+  

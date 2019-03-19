@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
   }
 
   private checkLogin(){
-    var isLogged: boolean = true
+    var isLogged: boolean = false
     this.userservice.isLogged().subscribe(
       res => {
         console.log('reslog ok ',res)
@@ -27,11 +27,11 @@ export class AuthGuard implements CanActivate {
         switch (error.status) {
           case 200: 
           console.log("autorized")
-            //TODO
+            isLogged = true
             break;
           case 401:
             console.log("unautorized")
-            //TODO
+            this.router.navigateByUrl('/login')
             break;
           default:
             console.log("server error: " + error.status + " " + error.statusText)
