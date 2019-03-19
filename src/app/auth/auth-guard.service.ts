@@ -21,10 +21,23 @@ export class AuthGuard implements CanActivate {
     var isLogged: boolean = true
     this.userservice.isLogged().subscribe(
       res => {
-        console.log('reslog ' + res)
+        console.log('reslog ok ',res)
       },
-      err => {
-        console.log('errlog ' + err)
+      error => { 
+        switch (error.status) {
+          case 200: 
+          console.log("autorized")
+            //TODO
+            break;
+          case 401:
+            console.log("unautorized")
+            //TODO
+            break;
+          default:
+            console.log("server error: " + error.status + " " + error.statusText)
+            //TODO
+            break;
+        }
       }
     )
     return isLogged
