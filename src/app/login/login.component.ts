@@ -51,11 +51,19 @@ export class LoginComponent implements OnInit {
           console.log("formLogin()   " + res)
           this.openSnackBar("wrong credentials", "try again")
         }
-      
       },
       err => {
-        console.log("login error")
-        this.openSnackBar("login server error", "try leater")
+        console.log("login error", err)
+        const status: Number = err.status
+        let errorMessage: string
+        switch(status){
+          case 401:
+            errorMessage = 'Wrong credential'
+            break
+          default:
+            errorMessage = 'Server error'
+        }
+        this.openSnackBar(errorMessage, "try leater")
       }
     )
   }

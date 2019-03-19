@@ -15,22 +15,31 @@ export class UserService {
   isLogged() {
     return this.httpClient.get(
       this._loginUrl,
-      { observe: 'response' }).pipe(
+      { observe: 'response', withCredentials: true }).pipe(
         map(res => res.status)
       )
   }
 
   //TODO
-  public login(email: string, password: string): Observable<string> {
+  public login(email: string, password: string) {
     console.log("login called")
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/x-www-form-urlencoded',
-      }),
-      withCredentials: true
-    }
     let urlEncodedRequest = "email="+(email)+"&"+"password="+(password)
     let resultString: string = "false"
-    return this.httpClient.post<string>(this._loginUrl, urlEncodedRequest, httpOptions)
+    return this.httpClient.post(
+      this._loginUrl,
+      urlEncodedRequest,
+      {
+        observe: 'response',
+        headers: new HttpHeaders({
+        'Content-Type':  'application/x-www-form-urlencoded',
+      }),
+      withCredentials: true,
+    }).pipe(
+      map(
+        res => {
+          return true
+        }
+      )
+    )
   }
 }

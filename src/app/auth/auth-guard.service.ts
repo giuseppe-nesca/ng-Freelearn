@@ -22,6 +22,7 @@ export class AuthGuard implements CanActivate {
     this.userservice.isLogged().subscribe(
       res => {
         console.log('reslog ok ',res)
+        isLogged = true
       },
       error => { 
         switch (error.status) {
