@@ -8,30 +8,33 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+  private isLogged: boolean = false
 
   constructor(private router: Router, private userservice: UserService) {}
 
   canActivate(
     nest: ActivatedRouteSnapshot,
     state: RouterStateSnapshot ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      return this.checkLogin()
+      console.log(`first value = ${this.isLogged}`)
+      let result =  this.checkLogin(state.url)
+      console.log(`returned : ${result}`, `second value = ${this.isLogged}`)
+      return result
   }
 
-  private checkLogin(){
-    var isLogged: boolean = false
+  private checkLogin(requestdeUrl: string): boolean | Observable<boolean>{
+    if (this.isLogged)
+      return true
     this.userservice.isLogged().subscribe(
       res => {
         console.log('reslog ok ',res)
-        isLogged = true
+        this.isLogged = true
+        this.router.navigateByUrl(requestdeUrl)
       },
       error => { 
         switch (error.status) {
-          case 200: 
-          console.log("autorized")
-            isLogged = true
-            break;
           case 401:
             console.log("unautorized")
+            this.isLogged = false
             this.router.navigateByUrl('/login')
             break;
           default:
@@ -41,6 +44,6 @@ export class AuthGuard implements CanActivate {
         }
       }
     )
-    return isLogged
+    return this.isLogged
   }
 }
