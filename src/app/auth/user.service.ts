@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 export class UserService {
 
   readonly _loginUrl: string = "http://localhost:8080/login"
+  readonly _userInfoUrl: string = "http://localhost:8080/userinfo"
 
   // private user: User = new User(-1, 'John', 'Doe', 'prova@email.it', 'utente')
   private user$ = new BehaviorSubject<User>(new User(-1, 'John', 'Doe', 'prova@email.it', 'utente'))
@@ -17,6 +18,26 @@ export class UserService {
   constructor(private httpClient: HttpClient) { }
 
   getUser() {
+    this.httpClient.get(
+      this._userInfoUrl,
+      {
+        observe: 'response',
+        withCredentials: true,
+      }
+    ).pipe(
+      map(
+        res => {
+          return res.body
+        }
+      )).subscribe(
+        (json) => {
+          // @ts-ignore
+          this.user$.next(new User(json.id, json.name, json.surname, json.email, json.role))
+        },
+        err => {
+
+        }
+      )
     return this.user$.asObservable()
   }
 
