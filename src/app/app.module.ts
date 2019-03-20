@@ -10,7 +10,8 @@ import { BookingComponent } from './dashboard/booking/booking.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MainNavComponent } from './dashboard/main-nav/main-nav.component'
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
     LoginComponent,
     DashboardComponent,
     HomeComponent,
-    BookingComponent
+    BookingComponent,
+    MainNavComponent
   ],
   imports: [
     BrowserModule,
