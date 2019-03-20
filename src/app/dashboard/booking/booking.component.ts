@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { Observable, Subject, of } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 
 @Component({
@@ -24,10 +24,10 @@ export class BookingComponent implements OnInit {
   ngOnInit() {
     //Gestione form
     this.subjectFormGroup = this._formBuilder.group({
-      subjectCtrl: ['', Validators.required]
+      subjectCtrl: ['', [Validators.required, this._forbiddenNameValidator(this.subjectOption)]]
     });
     this.teacherFormGroup = this._formBuilder.group({
-      teacherCtrl: ['', Validators.required]
+      teacherCtrl: ['', [Validators.required, this._forbiddenNameValidator(this.teacherOption)]]
     });
     this.lessonFormGroup = this._formBuilder.group({
       lessonCtrl: ['', Validators.required]
@@ -48,5 +48,14 @@ export class BookingComponent implements OnInit {
   private _filter(value: string, options: string[]): string[] {
      var filterValue = value.toLowerCase();
      return options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  private _forbiddenNameValidator(whitelist: string[]): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      console.log(`control.value = ${control.value}`)
+      const forbidden = !(whitelist.includes(control.value))
+      console.log(`forbidden = ${forbidden}`)
+      return forbidden ? {'forbiddenName': {value: control.value}} : null;
+    };
   }
 }
