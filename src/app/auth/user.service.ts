@@ -35,7 +35,7 @@ export class UserService {
           this.user$.next(new User(json.id, json.name, json.surname, json.email, json.role))
         },
         err => {
-
+          // TODO
         }
       )
     return this.user$.asObservable()

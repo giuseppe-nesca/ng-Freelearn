@@ -1,3 +1,55 @@
-<p>
-  booking works!
-</p>
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="subjectFormGroup">
+    <form [formGroup]="subjectFormGroup">
+      <ng-template matStepLabel>Scegli la materia</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="TODO MENU" formControlName="subjectCtrl" [matAutocomplete]="subjectAuto" required>
+        <mat-autocomplete #subjectAuto="matAutocomplete">
+          <mat-option *ngFor="let option of subjectFilteredOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="teacherFormGroup">
+    <form [formGroup]="teacherFormGroup">
+      <ng-template matStepLabel>Scegli il professore</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="TODO MENU" formControlName="teacherCtrl" [matAutocomplete]="teacherAuto" required>
+        <mat-autocomplete #teacherAuto="matAutocomplete">
+          <mat-option *ngFor="let option of teacherFilteredOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+   <mat-step [stepControl]="lessonFormGroup">
+    <form [formGroup]="lessonFormGroup">
+      <ng-template matStepLabel>Seleziona il turno</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="TODO CALENDAR" formControlName="lessonCtrl" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Riepilogo</ng-template>
+    You are now done.
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>
