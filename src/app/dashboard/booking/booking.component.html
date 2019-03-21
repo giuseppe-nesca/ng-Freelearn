@@ -3,7 +3,7 @@
     <form [formGroup]="subjectFormGroup">
       <ng-template matStepLabel>Scegli la materia</ng-template>
       <mat-form-field>
-        <input matInput placeholder="TODO MENU" formControlName="subjectCtrl" [matAutocomplete]="subjectAuto" required>
+        <input matInput placeholder="Inserisci la materia" formControlName="subjectCtrl" [matAutocomplete]="subjectAuto" required>
         <mat-autocomplete #subjectAuto="matAutocomplete">
           <mat-option *ngFor="let option of subjectFilteredOptions | async" [value]="option">
             {{option}}
@@ -19,7 +19,7 @@
     <form [formGroup]="teacherFormGroup">
       <ng-template matStepLabel>Scegli il professore</ng-template>
       <mat-form-field>
-        <input matInput placeholder="TODO MENU" formControlName="teacherCtrl" [matAutocomplete]="teacherAuto" required>
+        <input matInput placeholder="Inserisci il professore" formControlName="teacherCtrl" [matAutocomplete]="teacherAuto" required>
         <mat-autocomplete #teacherAuto="matAutocomplete">
           <mat-option *ngFor="let option of teacherFilteredOptions | async" [value]="option">
             {{option}}
@@ -36,8 +36,15 @@
     <form [formGroup]="lessonFormGroup">
       <ng-template matStepLabel>Seleziona il turno</ng-template>
       <mat-form-field>
-        <input matInput placeholder="TODO CALENDAR" formControlName="lessonCtrl" required>
+        <input matInput [matDatepickerFilter]="dateFilter" formControlName="lessonCtrl" [matDatepicker]="picker" placeholder="Scegli una data">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
+      <mat-radio-group aria-label="Seleziona un turno">
+        <mat-radio-button value="1">Turno 1</mat-radio-button>
+        <mat-radio-button value="2">Turno 2</mat-radio-button>
+        <mat-radio-button value="2">Turno 3</mat-radio-button>
+      </mat-radio-group>
       <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button matStepperNext>Next</button>
@@ -46,7 +53,10 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Riepilogo</ng-template>
-    You are now done.
+    <p>Riepilogo selezioni:</p>
+    <p>Materia: {{subjectFormGroup.get("subjectCtrl").value}}</p>
+    <p>Professore: {{teacherFormGroup.get("teacherCtrl").value}}</p>
+    <p>Data e Turno: {{date}}</p>
     <div>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button (click)="stepper.reset()">Reset</button>

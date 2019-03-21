@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
-import { Observable, Subject, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-booking',
@@ -9,6 +10,11 @@ import { startWith, map } from 'rxjs/operators';
   styleUrls: ['./booking.component.css']
 })
 export class BookingComponent implements OnInit {
+
+  get date() {
+    var date: Date = this.lessonFormGroup.get("lessonCtrl").value
+    return new DatePipe('en-US').transform(date, 'shortDate');
+  }
 
   subjectFormGroup: FormGroup;
   teacherFormGroup: FormGroup;
@@ -18,6 +24,11 @@ export class BookingComponent implements OnInit {
   teacherOption: string[] = ['Four', 'Five', 'Six'];
   subjectFilteredOptions: Observable<string[]>;
   teacherFilteredOptions: Observable<string[]>;
+
+  dateFilter = (date: Date): boolean => {
+    const day = date.getDay();
+    return day !== 0 && day !== 6;
+  }
   
   constructor(private _formBuilder: FormBuilder) { }
 
@@ -30,7 +41,7 @@ export class BookingComponent implements OnInit {
       teacherCtrl: ['', [Validators.required, this._forbiddenNameValidator(this.teacherOption)]]
     });
     this.lessonFormGroup = this._formBuilder.group({
-      lessonCtrl: ['', Validators.required]
+      lessonCtrl: ['', [Validators.required]],
     })
     //Gestione filtri
     this.subjectFilteredOptions = this.subjectFormGroup.controls['subjectCtrl'].valueChanges
