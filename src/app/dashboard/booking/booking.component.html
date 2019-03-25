@@ -1,4 +1,5 @@
-<mat-horizontal-stepper [linear]="true" #stepper>
+<mat-horizontal-stepper [linear]="true" #stepper
+(selectionChange)="selectionChange($event)">
   <mat-step [stepControl]="subjectFormGroup">
     <form [formGroup]="subjectFormGroup">
       <ng-template matStepLabel>Scegli la materia</ng-template>

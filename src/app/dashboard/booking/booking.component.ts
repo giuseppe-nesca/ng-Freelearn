@@ -5,7 +5,8 @@ import { startWith, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { BookingService } from './booking.service';
 
-import { Subject } from 'src/app/model/Subject';
+import { Subject } from 'src/app/model/subject';
+import { Teacher } from 'src/app/model/teacher';
 
 
 @Component({
@@ -20,16 +21,17 @@ export class BookingComponent implements OnInit {
   lessonFormGroup: FormGroup;
 
   subjects: Subject[]
-  subjectOption: string[] = ['One', 'Two', 'Three'];
-  teacherOption: string[] = ['Four', 'Five', 'Six'];
+  subjectOption: string[] = [];
+  teachers: Teacher[]
+  teacherOption: string[] = [];
   subjectFilteredOptions: Observable<string[]>;
   teacherFilteredOptions: Observable<string[]>;
   
   constructor(private _formBuilder: FormBuilder, private bookingService: BookingService) { }
 
   ngOnInit() {
-    this._initSubject()
-    this._initTeacher()
+    this._initSubjects()
+    this._initTeachers()
     this.lessonFormGroup = this._formBuilder.group({
       lessonCtrl: ['', Validators.required]
     })
@@ -40,11 +42,21 @@ export class BookingComponent implements OnInit {
         res.forEach(x => {
           this.subjectOption.push(x.name)
         })
-        this._initSubject()
+        this._initSubjects()
+      }
+    )
+    this.bookingService.getTeachers().subscribe(
+      (res: Teacher[]) => {
+        this.teachers = res
+        this.teacherOption.splice(0, this.teacherOption.length)
+        res.forEach(x => {
+          this.teacherOption.push(x.surname)
+        })
+        this._initTeachers()
       }
     )
   }
-  private _initSubject() {
+  private _initSubjects() {
     this.subjectFormGroup = this._formBuilder.group({
       subjectCtrl: ['', [Validators.required, this._forbiddenNameValidator(this.subjectOption)]]
     });
@@ -54,7 +66,7 @@ export class BookingComponent implements OnInit {
         map(value => this._filter(value, this.subjectOption))
       );
   }
-  private _initTeacher() {
+  private _initTeachers() {
     this.teacherFormGroup = this._formBuilder.group({
       teacherCtrl: ['', [Validators.required, this._forbiddenNameValidator(this.teacherOption)]]
     });
@@ -70,13 +82,21 @@ export class BookingComponent implements OnInit {
   }
   private _forbiddenNameValidator(whitelist: string[]): ValidatorFn {
     return (control: AbstractControl): {[key: string]: any} | null => {
-      console.log(`control.value = ${control.value}`)
       const forbidden = !(whitelist.includes(control.value))
-      console.log(`forbidden = ${forbidden}`)
       return forbidden ? {'forbiddenName': {value: control.value}} : null;
     };
   }
-  private _refreshSubject() {
-    this.bookingService.getSubjects()
+
+  private selectionChange(event) {
+    console.log("oooooooooooooooooooooooooo ")
+    let selectedIndex: number = (event.selectedIndex)
+    let selectedSubject: string = this.subjectFormGroup.controls['subjectCtrl'].value
+    let selectedSubjectIndex: number = this.subjects.map(s => s.name).indexOf(selectedSubject)
+    switch(selectedIndex) {
+      case 1: 
+        this.bookingService.getTeachers(selectedSubjectIndex + 1)
+        this._initTeachers()
+        break;
+    }
   }
 }
