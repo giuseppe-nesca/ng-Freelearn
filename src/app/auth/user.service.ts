@@ -12,7 +12,6 @@ export class UserService {
   readonly _loginUrl: string = "http://localhost:8080/login"
   readonly _userInfoUrl: string = "http://localhost:8080/userinfo"
 
-  // private user: User = new User(-1, 'John', 'Doe', 'prova@email.it', 'utente')
   private user$ = new BehaviorSubject<User>(new User(-1, 'John', 'Doe', 'prova@email.it', 'utente'))
 
   constructor(private httpClient: HttpClient) { }
@@ -26,9 +25,7 @@ export class UserService {
       }
     ).pipe(
       map(
-        res => {
-          return res.body
-        }
+        res => res.body
       )).subscribe(
         (json) => {
           // @ts-ignore
@@ -43,30 +40,21 @@ export class UserService {
 
   isLogged() {
     return this.httpClient.get(
-      this._loginUrl,
-      { observe: 'response', withCredentials: true }).pipe(
-        map(res => res.status)
-      )
+        this._loginUrl,
+        { observe: 'response', withCredentials: true }
+      ).pipe( map(res => res.status) )
   }
 
   public login(email: string, password: string) {
-    console.log("login called")
     let urlEncodedRequest = "email="+(email)+"&"+"password="+(password)
     return this.httpClient.post(
       this._loginUrl,
       urlEncodedRequest,
       {
         observe: 'response',
-        headers: new HttpHeaders({
-        'Content-Type':  'application/x-www-form-urlencoded',
-      }),
-      withCredentials: true,
-    }).pipe(
-      map(
-        res => {
-          return true
-        }
-      )
-    )
+        headers: new HttpHeaders({'Content-Type':  'application/x-www-form-urlencoded'}),
+        withCredentials: true,
+      }
+    ).pipe( map(res => true) )
   }
 }

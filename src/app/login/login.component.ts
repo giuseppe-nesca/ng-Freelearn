@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 import {FormControl, Validators} from '@angular/forms';
-import { HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router'
 import { UserService } from '../auth/user.service';
 import { MatSnackBar } from '@angular/material';
@@ -16,7 +13,6 @@ import { MatSnackBar } from '@angular/material';
 export class LoginComponent implements OnInit {
 
   constructor(
-    private _http: HttpClient, 
     private rotuer: Router, 
     private userService: UserService,
     private snackBar: MatSnackBar
@@ -36,11 +32,6 @@ export class LoginComponent implements OnInit {
   }
 
   formLogin(){
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/x-www-form-urlencoded'
-      })
-    }
     const response = this.userService.login(this.email.value, this.password.value)
     response.subscribe(
       res => {

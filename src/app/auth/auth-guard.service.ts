@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanActivateChild, CanLoad, Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { UserService } from './user.service';
 import { Observable } from 'rxjs';
 
@@ -15,9 +15,7 @@ export class AuthGuard implements CanActivate {
   canActivate(
     nest: ActivatedRouteSnapshot,
     state: RouterStateSnapshot ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      console.log(`first value = ${this.isLogged}`)
       let result =  this.checkLogin(state.url)
-      console.log(`returned : ${result}`, `second value = ${this.isLogged}`)
       return result
   }
 
@@ -26,7 +24,6 @@ export class AuthGuard implements CanActivate {
       return true
     this.userservice.isLogged().subscribe(
       res => {
-        console.log('reslog ok ',res)
         this.isLogged = true
         this.router.navigateByUrl(requestdeUrl)
       },

@@ -2,7 +2,6 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 
 import {AppComponent} from '../../app.component'
-import { Router } from '@angular/router';
 
 /** @title Responsive sidenav */
 @Component({
@@ -26,7 +25,6 @@ export class MainNavComponent implements OnDestroy {
   private _mobileQueryListener: () => void;
 
   constructor(
-    router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, appComponent: AppComponent) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();

@@ -39,7 +39,7 @@ export class BookingService {
     if (!id) {
       return this.teachers$.asObservable()
     }
-    const urlEncodedRequest: string = `subjectID=${id}`
+    let urlEncodedRequest: string = `subjectID=${id}`
     this.httpClient.post(
       this._getTeachersUrl, 
       urlEncodedRequest,
