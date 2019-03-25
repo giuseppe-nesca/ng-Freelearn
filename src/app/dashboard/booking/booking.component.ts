@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { BookingService } from './booking.service';
+import { DatePipe } from '@angular/common';
 
 import { Subject } from 'src/app/model/subject';
 import { Teacher } from 'src/app/model/teacher';
@@ -16,6 +17,11 @@ import { Teacher } from 'src/app/model/teacher';
 })
 export class BookingComponent implements OnInit {
 
+  get date() {
+    var date: Date = this.lessonFormGroup.get("lessonCtrl").value
+    return new DatePipe('en-US').transform(date, 'shortDate');
+  }
+
   subjectFormGroup: FormGroup;
   teacherFormGroup: FormGroup;
   lessonFormGroup: FormGroup;
@@ -26,6 +32,11 @@ export class BookingComponent implements OnInit {
   teacherOption: string[] = [];
   subjectFilteredOptions: Observable<string[]>;
   teacherFilteredOptions: Observable<string[]>;
+
+  dateFilter = (date: Date): boolean => {
+    const day = date.getDay();
+    return day !== 0 && day !== 6;
+  }
   
   constructor(private _formBuilder: FormBuilder, private bookingService: BookingService) { }
 
@@ -60,6 +71,13 @@ export class BookingComponent implements OnInit {
     this.subjectFormGroup = this._formBuilder.group({
       subjectCtrl: ['', [Validators.required, this._forbiddenNameValidator(this.subjectOption)]]
     });
+    this.teacherFormGroup = this._formBuilder.group({
+      teacherCtrl: ['', [Validators.required, this._forbiddenNameValidator(this.teacherOption)]]
+    });
+    this.lessonFormGroup = this._formBuilder.group({
+      lessonCtrl: ['', [Validators.required]],
+    })
+    //Gestione filtri
     this.subjectFilteredOptions = this.subjectFormGroup.controls['subjectCtrl'].valueChanges
       .pipe(
         startWith(''),
