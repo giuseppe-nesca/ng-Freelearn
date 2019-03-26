@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
 import { BookingService } from './booking.service';
-import { DatePipe, formatDate } from '@angular/common';
+import { formatDate } from '@angular/common';
 
 import { Subject } from 'src/app/model/subject';
 import { Teacher } from 'src/app/model/teacher';
+import { ErrorService } from 'src/app/error.service';
 
 
 @Component({
@@ -28,7 +28,6 @@ export class BookingComponent implements OnInit {
     return formatDate(date, "dd/MM/yyyy", 'en-US')
   }
 
-
   get slot(): string{
     return this.lessonFormGroup.controls['slotCtrl'].value
   }
@@ -39,16 +38,16 @@ export class BookingComponent implements OnInit {
   slotFormGroup: FormGroup;
 
   todayDate: Date = new Date();
-  slotOption: Boolean[] = [true, true, false]
+  slotOption: boolean[] = [true, true, false]
 
-  subjects: Subject[]
+  subjects: Subject[] = []
   subjectOption: string[] = [];
-  teachers: Teacher[]
+  teachers: Teacher[] = []
   teacherOption: string[] = [];
   subjectFilteredOptions: Observable<string[]>;
   teacherFilteredOptions: Observable<string[]>;
 
-  constructor(private _formBuilder: FormBuilder, private bookingService: BookingService) { }
+  constructor(private _formBuilder: FormBuilder, private bookingService: BookingService, private errorService: ErrorService) { }
 
   dateFilter = (date: Date): boolean => {
     const day = date.getDay();
@@ -59,6 +58,7 @@ export class BookingComponent implements OnInit {
     this._initSubjects()
     this._initTeachers()
     this._initLesson()
+
     this.bookingService.getSubjects().subscribe(
       (res: Subject[]) => {
         this.subjects = res
@@ -75,13 +75,15 @@ export class BookingComponent implements OnInit {
         this._initTeachers()
       }
     )
-  }
-
-  private _initLesson() {
-    this.lessonFormGroup = this._formBuilder.group({
-      dateCtrl: ['', Validators.required],
-      slotCtrl: ['', Validators.required]
-    })
+    
+    this.bookingService.getAviableSlots().subscribe(
+      (res: boolean[]) => {
+        for (let i in [1,2,3]) {
+          this.slotOption[i] = res[i]
+        }
+        console.log(this.slotOption)
+      }
+    )
   }
 
   private _initSubjects() {
@@ -100,16 +102,26 @@ export class BookingComponent implements OnInit {
     this.teacherFormGroup = this._formBuilder.group({
       teacherCtrl: ['', [Validators.required, this._forbiddenNameValidator(this.teacherOption)]]
     });
+
     this.teacherFilteredOptions = this.teacherFormGroup.controls['teacherCtrl'].valueChanges
     .pipe(
       startWith(''),
       map(value => this._filter(value, this.teacherOption))
     );
   }
+
+  private _initLesson() {
+    this.lessonFormGroup = this._formBuilder.group({
+      dateCtrl: ['', Validators.required],
+      slotCtrl: ['', Validators.required]
+    })
+  }
+
   private _filter(value: string, options: string[]): string[] {
      var filterValue = value.toLowerCase();
      return options.filter(option => option.toLowerCase().includes(filterValue));
   }
+
   private _forbiddenNameValidator(whitelist: string[]): ValidatorFn {
     return (control: AbstractControl): {[key: string]: any} | null => {
       const forbidden = !(whitelist.includes(control.value))
@@ -131,6 +143,28 @@ export class BookingComponent implements OnInit {
         break;
       case 3:
         console.log(`selectedDate = ${this.date}`, `selectedSlot = ${selectedSlot}`)
+    }
+  }
+
+  reset() {
+    this._initSubjects()
+    this._initTeachers()
+    this._initLesson()
+  }
+  
+  submit(){
+    
+  }
+  
+  updateDate(event) {
+    let selectedTeacher: string = this.teacherFormGroup.controls['teacherCtrl'].value
+    let selectedTeacherID: number = this.teachers.map(t => t.surname).indexOf(selectedTeacher)
+    this.bookingService.getAviableSlots(selectedTeacherID + 1, this.dateSys)
+  }
+
+  checkLessons(){
+    if (this.date != "" && !this.slot){
+      this.errorService.showErrorMessage("Select a valid Slot")
     }
   }
 }
