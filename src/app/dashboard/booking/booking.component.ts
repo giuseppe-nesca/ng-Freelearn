@@ -118,6 +118,9 @@ export class BookingComponent implements OnInit {
   }
 
   private _filter(value: string, options: string[]): string[] {
+    if (!value) {
+      return options
+    }
      var filterValue = value.toLowerCase();
      return options.filter(option => option.toLowerCase().includes(filterValue));
   }
@@ -130,7 +133,6 @@ export class BookingComponent implements OnInit {
   }
 
   private selectionChange(event) {
-    console.log("oooooooooooooooooooooooooo ")
     let selectedIndex: number = (event.selectedIndex)
     let selectedSubject: string = this.subjectFormGroup.controls['subjectCtrl'].value
     let selectedSubjectIndex: number = this.subjects.map(s => s.name).indexOf(selectedSubject)
