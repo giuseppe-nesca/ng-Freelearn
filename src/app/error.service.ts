@@ -6,17 +6,13 @@ import { MatSnackBar } from '@angular/material';
 })
 export class ErrorService {
 
-  constructor(
-    private snackBar: MatSnackBar
-  ) {}
+  constructor(private snackBar: MatSnackBar) {}
 
   showErrorMessage(message: string, secondMessage: string = "ok") {
     this.openSnackBar(message, secondMessage)
   }
 
   openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 2000,
-    })
+    this.snackBar.open(message, action, { duration: 2000 })
   }
 }

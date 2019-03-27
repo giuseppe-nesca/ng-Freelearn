@@ -32,26 +32,27 @@ export class BookingComponent implements OnInit {
     return this.lessonFormGroup.controls['slotCtrl'].value
   }
 
-  subjectFormGroup: FormGroup;
-  teacherFormGroup: FormGroup;
-  lessonFormGroup: FormGroup;
-  slotFormGroup: FormGroup;
+  subjectFormGroup: FormGroup
+  teacherFormGroup: FormGroup
+  lessonFormGroup: FormGroup
+  slotFormGroup: FormGroup
 
-  todayDate: Date = new Date();
+  todayDate: Date = new Date()
   slotOption: boolean[] = [true, true, false]
 
   subjects: Subject[] = []
-  subjectOption: string[] = [];
+  subjectOption: string[] = []
+  subjectFilteredOptions: Observable<string[]>
+
   teachers: Teacher[] = []
-  teacherOption: string[] = [];
-  subjectFilteredOptions: Observable<string[]>;
-  teacherFilteredOptions: Observable<string[]>;
+  teacherOption: string[] = []
+  teacherFilteredOptions: Observable<string[]>
 
   constructor(private _formBuilder: FormBuilder, private bookingService: BookingService, private errorService: ErrorService) { }
 
   dateFilter = (date: Date): boolean => {
-    const day = date.getDay();
-    return day !== 0 && day !== 6;
+    const day = date.getDay()
+    return day !== 0 && day !== 6
   }
 
   ngOnInit() {
@@ -67,6 +68,7 @@ export class BookingComponent implements OnInit {
         this._initSubjects()
       }
     )
+
     this.bookingService.getTeachers().subscribe(
       (res: Teacher[]) => {
         this.teachers = res
@@ -78,10 +80,7 @@ export class BookingComponent implements OnInit {
     
     this.bookingService.getAviableSlots().subscribe(
       (res: boolean[]) => {
-        for (let i in [1,2,3]) {
-          this.slotOption[i] = res[i]
-        }
-        console.log(this.slotOption)
+        for (let i in [1,2,3]) this.slotOption[i] = res[i]
       }
     )
   }
@@ -89,25 +88,25 @@ export class BookingComponent implements OnInit {
   private _initSubjects() {
     this.subjectFormGroup = this._formBuilder.group({
       subjectCtrl: ['', [Validators.required, this._forbiddenNameValidator(this.subjectOption)]]
-    });
+    })
 
     this.subjectFilteredOptions = this.subjectFormGroup.controls['subjectCtrl'].valueChanges
       .pipe(
         startWith(''),
         map(value => this._filter(value, this.subjectOption))
-      );
+      )
   }
 
   private _initTeachers() {
     this.teacherFormGroup = this._formBuilder.group({
       teacherCtrl: ['', [Validators.required, this._forbiddenNameValidator(this.teacherOption)]]
-    });
+    })
 
     this.teacherFilteredOptions = this.teacherFormGroup.controls['teacherCtrl'].valueChanges
     .pipe(
       startWith(''),
       map(value => this._filter(value, this.teacherOption))
-    );
+    )
   }
 
   private _initLesson() {
@@ -118,18 +117,16 @@ export class BookingComponent implements OnInit {
   }
 
   private _filter(value: string, options: string[]): string[] {
-    if (!value) {
-      return options
-    }
-     var filterValue = value.toLowerCase();
-     return options.filter(option => option.toLowerCase().includes(filterValue));
+    if (!value) return options
+     var filterValue = value.toLowerCase()
+     return options.filter(option => option.toLowerCase().includes(filterValue))
   }
 
   private _forbiddenNameValidator(whitelist: string[]): ValidatorFn {
     return (control: AbstractControl): {[key: string]: any} | null => {
       const forbidden = !(whitelist.includes(control.value))
-      return forbidden ? {'forbiddenName': {value: control.value}} : null;
-    };
+      return forbidden ? {'forbiddenName': {value: control.value}} : null
+    }
   }
 
   private selectionChange(event) {
@@ -142,9 +139,7 @@ export class BookingComponent implements OnInit {
       case 1: 
         this.bookingService.getTeachers(selectedSubjectIndex + 1)
         this._initTeachers()
-        break;
-      case 3:
-        console.log(`selectedDate = ${this.date}`, `selectedSlot = ${selectedSlot}`)
+        break
     }
   }
 
@@ -155,7 +150,7 @@ export class BookingComponent implements OnInit {
   }
   
   submit(){
-    
+    //TODO
   }
   
   updateDate(event) {
