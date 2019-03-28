@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
@@ -8,7 +8,11 @@ import { formatDate } from '@angular/common';
 import { Subject } from 'src/app/model/subject';
 import { Teacher } from 'src/app/model/teacher';
 import { ErrorService } from 'src/app/error.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
+export interface SubmitDialog{
+  request: any
+}
 
 @Component({
   selector: 'app-booking',
@@ -28,8 +32,22 @@ export class BookingComponent implements OnInit {
     return formatDate(date, "dd/MM/yyyy", 'en-US')
   }
 
-  get slot(): string{
+  get slot(): string {
     return this.lessonFormGroup.controls['slotCtrl'].value
+  }
+
+  get subject(): Subject {
+    let name: string = this.subjectFormGroup.controls['subjectCtrl'].value
+    //let index: number = this.subjects.map(x => x.name).indexOf(name)
+    //return this.subjects.filter(x => x.name == name)[0]
+    return this.subjects.find(x => x.name == name)
+    //return this.subjects[index]
+  }
+
+  get teacher(): Teacher {
+    let name: string = this.teacherFormGroup.controls['teacherCtrl'].value
+    let index: number = this.teachers.map(x => x.name).indexOf(name)
+    return this.teachers[index]
   }
 
   subjectFormGroup: FormGroup
@@ -48,7 +66,7 @@ export class BookingComponent implements OnInit {
   teacherOption: string[] = []
   teacherFilteredOptions: Observable<string[]>
 
-  constructor(private _formBuilder: FormBuilder, private bookingService: BookingService, private errorService: ErrorService) { }
+  constructor(private _formBuilder: FormBuilder, public dialog: MatDialog, private bookingService: BookingService, private errorService: ErrorService) { }
 
   dateFilter = (date: Date): boolean => {
     const day = date.getDay()
@@ -150,7 +168,10 @@ export class BookingComponent implements OnInit {
   }
   
   submit(){
-    //TODO
+    const dialogRef = this.dialog.open(SubmitDialog, {
+      width: '250px',
+      data: {data: this.bookingService.getBookRequest(this.teacher.id, this.subject.id, this.date, this.slot.toSting())}
+    })
   }
   
   updateDate(event) {
@@ -164,4 +185,20 @@ export class BookingComponent implements OnInit {
       this.errorService.showErrorMessage("Select a valid Slot")
     }
   }
+}
+
+@Component({
+  selector: 'submit-dialog',
+  templateUrl: 'submit-dialog.html',
+})
+export class SubmitDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<SubmitDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: SubmitDialog) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
 }

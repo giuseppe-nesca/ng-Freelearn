@@ -12,6 +12,7 @@ export class BookingService {
   readonly _getSubjectsUrl = "http://localhost:8080/subjects/getSubjects"
   readonly _getTeachersUrl = "http://localhost:8080/teachers/getTeacher"
   readonly _getTeacherAviablilityUrl = "http://localhost:8080/teacher/isAviable"
+  readonly _submitBookingUrl = "http://localhost:8080/booking"
 
   private subjects$: BehaviorSubject<Subject[]> = new BehaviorSubject(new Array(new Subject(-1, "")))
   private teachers$: BehaviorSubject<Teacher[]> = new BehaviorSubject(new Array(new Teacher(-1, "", "")))
@@ -77,5 +78,15 @@ export class BookingService {
       (res: boolean[]) => this.aviableSlots$.next(res)
     ) //TODO handle errors
     return this.aviableSlots$.asObservable()
+  }
+
+  getBookRequest(teacherID: number, subjectID: number, date: string, slot: number){
+    let urlEncodedRequest: string = `teacherID=${teacherID}&subjectID=${subjectID}&date=${date}&slot=${slot}`
+    return this.httpClient.post(this._submitBookingUrl,
+      urlEncodedRequest,
+      {
+      headers: new HttpHeaders({ 'Content-Type':  'application/x-www-form-urlencoded' }),
+      withCredentials: true,
+      })
   }
 }
