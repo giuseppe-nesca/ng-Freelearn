@@ -10,7 +10,7 @@ import { Teacher } from 'src/app/model/teacher';
 import { ErrorService } from 'src/app/error.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-export interface SubmitDialog{
+export interface SubmitData{
   request: any
 }
 
@@ -45,9 +45,9 @@ export class BookingComponent implements OnInit {
   }
 
   get teacher(): Teacher {
-    let name: string = this.teacherFormGroup.controls['teacherCtrl'].value
-    let index: number = this.teachers.map(x => x.name).indexOf(name)
-    return this.teachers[index]
+    let surname: string = this.teacherFormGroup.controls['teacherCtrl'].value
+    // let index: number = this.teachers.map(x => x.name).indexOf(name)
+    return this.teachers.find(x => x.surname == surname)
   }
 
   subjectFormGroup: FormGroup
@@ -168,9 +168,9 @@ export class BookingComponent implements OnInit {
   }
   
   submit(){
-    const dialogRef = this.dialog.open(SubmitDialog, {
+    const dialogRef = this.dialog.open(SubmitDialogComponent, {
       width: '250px',
-      data: {data: this.bookingService.getBookRequest(this.teacher.id, this.subject.id, this.date, this.slot.toSting())}
+      data: {data: this.bookingService.getBookRequest(this.teacher.id, this.subject.id, this.date, +this.slot)}
     })
   }
   
@@ -189,13 +189,25 @@ export class BookingComponent implements OnInit {
 
 @Component({
   selector: 'submit-dialog',
-  templateUrl: 'submit-dialog.html',
+  template: `
+  <h1 mat-dialog-title>Hi {{data.name}}</h1>
+  <div mat-dialog-content>
+    <p>What's your favorite animal?</p>
+    <mat-form-field>
+      <input matInput [(ngModel)]="data.animal">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
+  </div>
+  `,
 })
-export class SubmitDialog {
+export class SubmitDialogComponent {
 
   constructor(
-    public dialogRef: MatDialogRef<SubmitDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: SubmitDialog) {}
+    public dialogRef: MatDialogRef<SubmitDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: SubmitData) {}
 
   onNoClick(): void {
     this.dialogRef.close();

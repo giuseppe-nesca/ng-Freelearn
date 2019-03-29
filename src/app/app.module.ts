@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './dashboard/home/home.component';
-import { BookingComponent } from './dashboard/booking/booking.component';
+import { BookingComponent, SubmitDialogComponent } from './dashboard/booking/booking.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,7 +20,8 @@ import { MainNavComponent } from './dashboard/main-nav/main-nav.component'
     DashboardComponent,
     HomeComponent,
     BookingComponent,
-    MainNavComponent
+    MainNavComponent,
+    SubmitDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +33,9 @@ import { MainNavComponent } from './dashboard/main-nav/main-nav.component'
     ReactiveFormsModule,
   ],
   providers: [],
+  entryComponents: [
+    SubmitDialogComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
