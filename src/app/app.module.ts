@@ -11,7 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MainNavComponent } from './dashboard/main-nav/main-nav.component'
+import { MainNavComponent } from './dashboard/main-nav/main-nav.component';
+import { HistoryComponent } from './dashboard/history/history.component'
 
 @NgModule({
   declarations: [
