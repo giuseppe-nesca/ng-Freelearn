@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './dashboard/home/home.component';
 import { BookingComponent } from './dashboard/booking/booking.component';
 import { AuthGuard } from './auth/auth-guard.service';
+import { HistoryComponent } from './dashboard/history/history.component';
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
     children: [
       { path: "home", component: HomeComponent },
       { path: "booking", component: BookingComponent },
+      { path: "history", component: HistoryComponent },
       { path: "", redirectTo: "home", pathMatch: "full" }
     ]
   },

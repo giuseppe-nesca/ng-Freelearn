@@ -21,6 +21,7 @@ import { HistoryComponent } from './dashboard/history/history.component'
     DashboardComponent,
     HomeComponent,
     BookingComponent,
+    HistoryComponent,
     MainNavComponent,
     SubmitDialogComponent
   ],
