@@ -16,6 +16,14 @@ export class Lesson {
     get subject(): string { return this._subjectString }
     get teacher(): string { return this._teacherString }
     get id(): number { return this._id }
+    get status(): string { return this._status }
+    get done(): boolean { return this._done }
+    get cancelled(): boolean {
+        if (this._status == "booked")
+            return false
+        else
+            return true
+    }
 
 
     constructor(id: number, userID: number, courseID: number, date: string, slot: number, status: string, done: boolean, subjectID: number, teacherID: number, subjectString: string, teacherString: string){
