@@ -1,6 +1,6 @@
 <mat-list>
   <h3 mat-subheader>Prenotazioni</h3>
-  <mat-list-item *ngFor="let less of lessons">
+  <mat-list-item *ngFor="let less of lessons$ | async">
     <mat-divider></mat-divider>
     <button mat-button (click)="delete(less.id)">Cancella</button>
     <p mat-line>Hai prenotato una lezione di <b>{{less.subject}}</b> con il docente <b>{{less.teacher}}</b></p>

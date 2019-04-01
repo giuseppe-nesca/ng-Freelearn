@@ -24,14 +24,15 @@ export class HistoryService {
     ).subscribe(
       res => {
         let obj: Lesson[] = JSON.parse(JSON.stringify(res))
-        let lessons: Lesson[] = new Array()
+        let lessons: Lesson[] = new Array<Lesson>()
         obj.forEach(x => {
           lessons.push(new Lesson(
             // @ts-ignore
             x.id, x.userID, x.courseID, x.date, x.slot, x.status, x.done, x.subjectID, x.teacherID, x.subjectString, x.teacherString //TODO
           ))
-          this.lessons$.next(lessons)
+          console.log("lessons :", lessons)
         })
+        this.lessons$.next(lessons)
       },
       err => console.log(err) //TODO
     )
@@ -39,7 +40,6 @@ export class HistoryService {
   }
 
   deleteLesson(lessonID: number){
-    console.log("lezione id dentro service: " + lessonID)
     let urlEncodedRequest: string = `lessonID=${lessonID}`
     return this.httpClient.post(this._submitLessonURL,
       urlEncodedRequest,
