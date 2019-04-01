@@ -1,7 +1,10 @@
 import {MediaMatcher} from '@angular/cdk/layout';
-import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 
 import {AppComponent} from '../../app.component'
+import { UserService } from 'src/app/auth/user.service';
+import { Observable } from 'rxjs';
+import { User } from 'src/app/model/user';
 
 /** @title Responsive sidenav */
 @Component({
@@ -9,10 +12,12 @@ import {AppComponent} from '../../app.component'
   templateUrl: './main-nav.component.html',
   styleUrls: ['./main-nav.component.css'],
 })
-export class MainNavComponent implements OnDestroy {
+export class MainNavComponent implements OnDestroy, OnInit {
   mobileQuery: MediaQueryList;
 
   fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
+
+  user$: Observable<User> 
 
   title: string;
   fillerContent = Array.from({length: 50}, () =>
@@ -25,7 +30,9 @@ export class MainNavComponent implements OnDestroy {
   private _mobileQueryListener: () => void;
 
   constructor(
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, appComponent: AppComponent) {
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher, appComponent: AppComponent,
+    private userService: UserService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -37,5 +44,10 @@ export class MainNavComponent implements OnDestroy {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
+  ngOnInit(){
+    this.user$ = this.userService.getUser()
+  }
+
   shouldRun = true
+
 }

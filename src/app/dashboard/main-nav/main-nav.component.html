@@ -13,6 +13,15 @@
         <a mat-list-item routerLink="./home" routerLinkActive="active">Home</a>
         <a mat-list-item routerLink="./booking" routerLinkActive="active">Booking</a>
         <a mat-list-item routerLink="./history" routerLinkActive="active">History</a>
+        <br>
+        <div *ngIf="(user$ | async).role == 'admin'">
+          <mat-label>Admin</mat-label>
+          <mat-divider></mat-divider>
+          <a mat-list-item routerLink="./history" routerLinkActive="active">Prenotation</a>
+          <a mat-list-item routerLink="./history" routerLinkActive="active">Subjects</a>
+          <a mat-list-item routerLink="./history" routerLinkActive="active">Teachers</a>
+          <a mat-list-item routerLink="./history" routerLinkActive="active">Courses</a>
+        </div>
         <!-- <a mat-list-item routerLink="." *ngFor="let nav of fillerNav">{{nav}}</a> -->
       </mat-nav-list>
     </mat-sidenav>
