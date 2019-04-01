@@ -15,6 +15,7 @@ export class Lesson {
     get slot(): number { return this._slot }
     get subject(): string { return this._subjectString }
     get teacher(): string { return this._teacherString }
+    get id(): number { return this._id }
 
 
     constructor(id: number, userID: number, courseID: number, date: string, slot: number, status: string, done: boolean, subjectID: number, teacherID: number, subjectString: string, teacherString: string){

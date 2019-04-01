@@ -22,4 +22,20 @@ export class HistoryComponent implements OnInit {
       }
     )
   }
+
+  delete(lessonID: number){
+    this.historyService.deleteLesson(lessonID).subscribe(
+      res => console.log("cancellata"),
+      err => {
+        switch (err.status){
+          case 400:
+            this.errorService.showErrorMessage(err.body, "ok")
+            break
+          case 401:
+            this.errorService.authErrorMessage()
+
+        }
+      }
+    )
+  }
 }

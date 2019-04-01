@@ -87,6 +87,7 @@ export class BookingService {
       {
       headers: new HttpHeaders({ 'Content-Type':  'application/x-www-form-urlencoded' }),
       withCredentials: true,
-      })
+      }
+    )
   }
 }

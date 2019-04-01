@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 export class HistoryService {
 
   readonly _getLessonsURL = "http://localhost:8080/lessons/user"
+  readonly _submitLessonURL = "http://localhost:8080/lessons/delete"
 
   private lessons$: BehaviorSubject<Lesson[]> = new BehaviorSubject(new Array())
 
@@ -35,5 +36,17 @@ export class HistoryService {
       err => console.log(err) //TODO
     )
     return this.lessons$.asObservable()
+  }
+
+  deleteLesson(lessonID: number){
+    console.log("lezione id dentro service: " + lessonID)
+    let urlEncodedRequest: string = `lessonID=${lessonID}`
+    return this.httpClient.post(this._submitLessonURL,
+      urlEncodedRequest,
+      {
+      headers: new HttpHeaders({ 'Content-Type':  'application/x-www-form-urlencoded' }),
+      withCredentials: true
+      }
+    )
   }
 }
