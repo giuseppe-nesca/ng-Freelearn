@@ -2,6 +2,8 @@
   <mat-toolbar color="primary" class="toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
     <h1 class="app-name">{{title}}</h1>
+    <span class="spanNav"></span>
+    <button mat-button (click)="logout()">Logout</button>
   </mat-toolbar>
 
   <mat-sidenav-container class="sidenav-container"
@@ -17,7 +19,7 @@
         <div *ngIf="(user$ | async).role == 'admin'">
           <mat-label>Admin</mat-label>
           <mat-divider></mat-divider>
-          <a mat-list-item routerLink="./history" routerLinkActive="active">Prenotation</a>
+          <a mat-list-item routerLink="./prenotation" routerLinkActive="active">Prenotation</a>
           <a mat-list-item routerLink="./history" routerLinkActive="active">Subjects</a>
           <a mat-list-item routerLink="./history" routerLinkActive="active">Teachers</a>
           <a mat-list-item routerLink="./history" routerLinkActive="active">Courses</a>

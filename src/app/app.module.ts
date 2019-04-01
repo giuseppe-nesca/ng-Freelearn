@@ -12,7 +12,8 @@ import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainNavComponent } from './dashboard/main-nav/main-nav.component';
-import { HistoryComponent } from './dashboard/history/history.component'
+import { HistoryComponent } from './dashboard/history/history.component';
+import { PrenotationComponent } from './dashboard/prenotation/prenotation.component'
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import { HistoryComponent } from './dashboard/history/history.component'
     BookingComponent,
     HistoryComponent,
     MainNavComponent,
-    SubmitDialogComponent
+    PrenotationComponent,
+    SubmitDialogComponent,
+    PrenotationComponent
   ],
   imports: [
     BrowserModule,

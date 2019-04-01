@@ -11,6 +11,7 @@ export class UserService {
 
   readonly _loginUrl: string = "http://localhost:8080/login"
   readonly _userInfoUrl: string = "http://localhost:8080/userinfo"
+  readonly _userLogout: string = "http://localhost:8080/logout"
 
   private user$ = new BehaviorSubject<User>(new User(-1, 'John', 'Doe', 'prova@email.it', 'utente'))
 
@@ -52,9 +53,20 @@ export class UserService {
       urlEncodedRequest,
       {
         observe: 'response',
-        headers: new HttpHeaders({'Content-Type':  'application/x-www-form-urlencoded'}),
+        headers: new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'}),
         withCredentials: true,
       }
     ).pipe( map(res => true) )
+  }
+
+  public logout(){
+    console.log("Sono dentro il logout")
+    return this.httpClient.post(
+      this._userLogout,
+      {
+        headers: new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'}),
+        withCredentials: true
+      }
+    )
   }
 }

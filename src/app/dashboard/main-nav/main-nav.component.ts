@@ -36,7 +36,6 @@ export class MainNavComponent implements OnDestroy, OnInit {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-
     this.title = appComponent.title
   }
 
@@ -46,6 +45,10 @@ export class MainNavComponent implements OnDestroy, OnInit {
 
   ngOnInit(){
     this.user$ = this.userService.getUser()
+  }
+
+  private logout(){
+    this.userService.logout()
   }
 
   shouldRun = true
