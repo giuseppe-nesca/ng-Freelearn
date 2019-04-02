@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import {map} from 'rxjs/operators'
 import { User } from '../model/user';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class UserService {
 
   private user$ = new BehaviorSubject<User>(new User(-1, 'John', 'Doe', 'prova@email.it', 'utente'))
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private router: Router) { }
 
   getUser() {
     this.httpClient.get(
@@ -60,13 +61,13 @@ export class UserService {
   }
 
   public logout(){
-    console.log("Sono dentro il logout")
-    return this.httpClient.post(
+    this.httpClient.get(
       this._userLogout,
       {
         headers: new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'}),
         withCredentials: true
       }
-    )
+    ).subscribe()
+    this.router.navigateByUrl("/login")
   }
 }
