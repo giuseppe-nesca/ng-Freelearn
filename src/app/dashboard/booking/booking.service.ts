@@ -16,6 +16,7 @@ export class BookingService {
 
   private subjects$: BehaviorSubject<Subject[]> = new BehaviorSubject(new Array(new Subject(-1, "")))
   private teachers$: BehaviorSubject<Teacher[]> = new BehaviorSubject(new Array(new Teacher(-1, "", "")))
+  private aviableSlots$: BehaviorSubject<boolean[]> = new BehaviorSubject<boolean[]>(new Array(false, false, false))
   
   constructor(private httpClient: HttpClient) { }
 
@@ -27,7 +28,7 @@ export class BookingService {
         obj.forEach(x => { subjects.push(new Subject(x.id, x.name)) })
         this.subjects$.next(subjects)
       },
-      err => { /*TODO*/ } //AAAAAAAAAAAAAAAAAAAAAAAAA
+      err => { console.log(err) /*TODO*/ }
     )
     return this.subjects$.asObservable()
   }
@@ -49,19 +50,18 @@ export class BookingService {
         obj.forEach(x => { teachers.push(new Teacher(x.id, x.name, x.surname)) })
         this.teachers$.next(teachers)
       },
-      err => { /*TODO*/ } //AAAAAAAAAAAAAAAAAAAAAAAAA
+      err => { console.log(err) /*TODO*/ } 
     )
     return this.teachers$.asObservable()
   }
 
-  private aviableSlots$: BehaviorSubject<boolean[]> = new BehaviorSubject<boolean[]>(new Array(false, false, false))
   
   getAviableSlots(id?: number, date?: string) {
     if (!id && !date) {
       return this.aviableSlots$.asObservable()
     } else {
       if (!id || !date){
-        throwError(new Error("bad parameters")) //AAAAAAAAAAAAAAAAAAAAAAAAA
+        throwError(new Error("bad parameters")) //TODO
         return
       }
     }

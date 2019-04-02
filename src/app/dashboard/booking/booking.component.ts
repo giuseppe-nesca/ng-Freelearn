@@ -9,9 +9,13 @@ import { Subject } from 'src/app/model/subject';
 import { Teacher } from 'src/app/model/teacher';
 import { ErrorService } from 'src/app/error.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { request } from 'https';
 
 export interface SubmitData{
-  request: any
+  request: any,
+  error: boolean
 }
 
 @Component({
@@ -38,15 +42,11 @@ export class BookingComponent implements OnInit {
 
   get subject(): Subject {
     let name: string = this.subjectFormGroup.controls['subjectCtrl'].value
-    //let index: number = this.subjects.map(x => x.name).indexOf(name)
-    //return this.subjects.filter(x => x.name == name)[0]
     return this.subjects.find(x => x.name == name)
-    //return this.subjects[index]
   }
 
   get teacher(): Teacher {
     let surname: string = this.teacherFormGroup.controls['teacherCtrl'].value
-    // let index: number = this.teachers.map(x => x.name).indexOf(name)
     return this.teachers.find(x => x.surname == surname)
   }
 
@@ -66,7 +66,7 @@ export class BookingComponent implements OnInit {
   teacherOption: string[] = []
   teacherFilteredOptions: Observable<string[]>
 
-  constructor(private _formBuilder: FormBuilder, public dialog: MatDialog, private bookingService: BookingService, private errorService: ErrorService) { }
+  constructor(private _formBuilder: FormBuilder, public dialog: MatDialog, private bookingService: BookingService, private errorService: ErrorService, private router: Router) { }
 
   dateFilter = (date: Date): boolean => {
     const day = date.getDay()
@@ -149,13 +149,15 @@ export class BookingComponent implements OnInit {
 
   private selectionChange(event) {
     let selectedIndex: number = (event.selectedIndex)
-    let selectedSubject: string = this.subjectFormGroup.controls['subjectCtrl'].value
-    let selectedSubjectIndex: number = this.subjects.map(s => s.name).indexOf(selectedSubject)
+    //TODO
+    // let selectedSubject: string = this.subjectFormGroup.controls['subjectCtrl'].value
+    // let selectedSubjectIndex: number = this.subjects.map(s => s.name).indexOf(selectedSubject)
+    let selectedSubject: Subject = this.subject
     let selectedDate: string = this.lessonFormGroup.controls['dateCtrl'].value
     let selectedSlot: string = this.lessonFormGroup.controls['slotCtrl'].value
     switch(selectedIndex) {
       case 1: 
-        this.bookingService.getTeachers(selectedSubjectIndex + 1)
+        this.bookingService.getTeachers(selectedSubject.id)
         this._initTeachers()
         break
     }
@@ -168,10 +170,43 @@ export class BookingComponent implements OnInit {
   }
   
   submit(){
-    const dialogRef = this.dialog.open(SubmitDialogComponent, {
-      width: '250px',
-      data: {data: this.bookingService.getBookRequest(this.teacher.id, this.subject.id, this.date, +this.slot)}
-    })
+    let message: string = "Sucessfully booked! Check your prenotations in history"
+    this.bookingService.getBookRequest(this.teacher.id, this.subject.id, this.dateSys, + this.slot).subscribe(
+      res => {
+        console.log("dialog", res)
+        // this.errorService.showErrorMessage("Booked")
+        this.dialog.open(SubmitDialogComponent, {
+          width: '250px',
+          data: {
+            request: { request: message, error: false }
+          }
+        })
+      },
+      (err: HttpErrorResponse) => {
+        console.log("dialog", err)
+        switch (err.status) {
+          case 401:
+            this.errorService.showErrorMessage("autentication failed")
+            this.router.navigateByUrl('/login')
+            break;
+          default:
+          this.dialog.open(SubmitDialogComponent, {
+            width: '250px',
+            data: {
+              request: { request: err.error, error: true }
+            }
+          })
+         }
+      }
+    )
+
+
+
+    //OLD
+    // const dialogRef = this.dialog.open(SubmitDialogComponent, {
+    //   width: '250px',
+    //   data: {request: this.bookingService.getBookRequest(this.teacher.id, this.subject.id, this.dateSys, + this.slot)}
+    // })
   }
   
   updateDate(event) {
@@ -190,12 +225,10 @@ export class BookingComponent implements OnInit {
 @Component({
   selector: 'submit-dialog',
   template: `
-  <h1 mat-dialog-title>Hi {{data.name}}</h1>
+  <h1 mat-dialog-title>Booking</h1>
   <div mat-dialog-content>
-    <p>What's your favorite animal?</p>
-    <mat-form-field>
-      <input matInput [(ngModel)]="data.animal">
-    </mat-form-field>
+    <p style="color:Tomato;" *ngIf=error>{{errorMessage}}</p>
+    <p *ngIf=!error>{{message}}</p>
   </div>
   <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>
@@ -203,14 +236,48 @@ export class BookingComponent implements OnInit {
   </div>
   `,
 })
-export class SubmitDialogComponent {
+export class SubmitDialogComponent implements OnInit {
 
+  error: boolean = false;
+  errorMessage:string = ""
+  message: string = "Sucessfully booked!\n Check your prenotations in history"
+ 
   constructor(
     public dialogRef: MatDialogRef<SubmitDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: SubmitData) {}
+    @Inject(MAT_DIALOG_DATA) public data: SubmitData,
+    private errorService: ErrorService,
+    private router: Router) {}
+  
+  ngOnInit() {
+    console.log("data: ", this.data )
+    if (this.data.request.error) {
+      this.error = true
+      this.errorMessage = this.data.request.request
+    } else {
+      this.error = false
+      this.message = this.data.request.request
+    }
+
+    // OLD
+    // this.data.request.subscribe(
+    //   (res: Observable<any>) => {
+    //     console.log("dialog", res)
+    //     this.error = false
+    //   },
+    //   (err: HttpErrorResponse) => {
+    //     console.log("dialog", err)
+    //     // this.errorService.showErrorMessage(err.error)
+    //     switch (err.status) {
+    //       case 401:
+    //         this.router.navigateByUrl('/login')
+    //     }
+    //     this.error = true
+    //     this.errorMessage = err.error
+    //   }
+    // )
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 }
