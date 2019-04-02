@@ -19,6 +19,7 @@ export class HistoryService {
     this.httpClient.get(
       this._getLessonsURL,
       {
+        headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded'}),
         withCredentials: true,
       }
     ).subscribe(
@@ -28,13 +29,12 @@ export class HistoryService {
         obj.forEach(x => {
           lessons.push(new Lesson(
             // @ts-ignore
-            x.id, x.userID, x.courseID, x.date, x.slot, x.status, x.done, x.subjectID, x.teacherID, x.subjectString, x.teacherString //TODO
+            x.id, x.userID, x.courseID, x.date, x.slot, x.status, x.done, x.subjectID, x.teacherID, x.subjectString, x.teacherString
           ))
-          console.log("lessons :", lessons)
         })
         this.lessons$.next(lessons)
       },
-      err => console.log(err) //TODO
+      err => console.log(err)
     )
     return this.lessons$.asObservable()
   }

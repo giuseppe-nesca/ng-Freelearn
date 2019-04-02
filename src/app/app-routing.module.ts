@@ -7,6 +7,7 @@ import { BookingComponent } from './dashboard/booking/booking.component';
 import { AuthGuard } from './auth/auth-guard.service';
 import { HistoryComponent } from './dashboard/history/history.component';
 import { PrenotationComponent } from './dashboard/prenotation/prenotation.component';
+import { SubjectsComponent } from './dashboard/subjects/subjects.component';
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: "booking", component: BookingComponent },
       { path: "history", component: HistoryComponent },
       { path: "prenotation", component: PrenotationComponent },
+      { path: "subjects", component: SubjectsComponent },
       { path: "", redirectTo: "home", pathMatch: "full" }
     ]
   },

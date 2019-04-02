@@ -24,6 +24,7 @@ export class Lesson {
         else
             return true
     }
+    get userID(): number { return this._userID}
 
 
     constructor(id: number, userID: number, courseID: number, date: string, slot: number, status: string, done: boolean, subjectID: number, teacherID: number, subjectString: string, teacherString: string){
