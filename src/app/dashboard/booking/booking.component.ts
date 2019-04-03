@@ -11,7 +11,6 @@ import { ErrorService } from 'src/app/error.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { request } from 'https';
 
 export interface SubmitData{
   request: any,
