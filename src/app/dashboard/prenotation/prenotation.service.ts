@@ -21,7 +21,6 @@ export class PrenotationService {
     this.httpClient.get(
       this._getLessonsUrl,
       {
-        headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded'}),
         withCredentials: true
       }
     ).subscribe(
@@ -45,7 +44,6 @@ export class PrenotationService {
     this.httpClient.get(
       this._getUsersUrl,
       {
-        headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded'}),
         withCredentials: true
       }
      ).subscribe(
