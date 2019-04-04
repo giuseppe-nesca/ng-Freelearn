@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import {map} from 'rxjs/operators'
 import { User } from '../model/user';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,11 @@ export class UserService {
 
   readonly _loginUrl: string = "http://localhost:8080/login"
   readonly _userInfoUrl: string = "http://localhost:8080/userinfo"
+  readonly _userLogout: string = "http://localhost:8080/logout"
 
   private user$ = new BehaviorSubject<User>(new User(-1, 'John', 'Doe', 'prova@email.it', 'utente'))
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private router: Router) { }
 
   getUser() {
     this.httpClient.get(
@@ -52,9 +54,20 @@ export class UserService {
       urlEncodedRequest,
       {
         observe: 'response',
-        headers: new HttpHeaders({'Content-Type':  'application/x-www-form-urlencoded'}),
+        headers: new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'}),
         withCredentials: true,
       }
     ).pipe( map(res => true) )
+  }
+
+  public logout(){
+    this.httpClient.get(
+      this._userLogout,
+      {
+        headers: new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'}),
+        withCredentials: true
+      }
+    ).subscribe()
+    this.router.navigateByUrl("/login")
   }
 }

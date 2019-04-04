@@ -11,7 +11,7 @@ export class User {
     get email(): string { return this._email }
     get role(): string { return this._role }
 
-    constructor(id: number, name: string, surname: string, email: string, role: string){
+    constructor(id: number, name: string, surname: string, email?: string, role?: string){
         this._id = id
         this._name = name
         this._surname = surname

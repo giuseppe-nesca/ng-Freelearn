@@ -12,7 +12,9 @@ import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainNavComponent } from './dashboard/main-nav/main-nav.component';
-import { HistoryComponent } from './dashboard/history/history.component'
+import { HistoryComponent } from './dashboard/history/history.component';
+import { PrenotationComponent } from './dashboard/prenotation/prenotation.component';
+import { SubjectsComponent } from './dashboard/subjects/subjects.component'
 
 @NgModule({
   declarations: [
@@ -21,8 +23,12 @@ import { HistoryComponent } from './dashboard/history/history.component'
     DashboardComponent,
     HomeComponent,
     BookingComponent,
+    HistoryComponent,
     MainNavComponent,
-    SubmitDialogComponent
+    PrenotationComponent,
+    SubmitDialogComponent,
+    PrenotationComponent,
+    SubjectsComponent
   ],
   imports: [
     BrowserModule,

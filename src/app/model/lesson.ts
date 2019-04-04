@@ -8,15 +8,36 @@ export class Lesson {
     private _done:      boolean;
     private _subjectID: number;
     private _teacherID: number;
+    private _subjectString: string;
+    private _teacherString: string;
 
-    constructor(id: number, userID: number, courseID: number, date: string, slot: number, status: string, done: boolean, subjectID: number, teacherID: number){
+    get date(): string { return this._date }
+    get slot(): number { return this._slot }
+    get subject(): string { return this._subjectString }
+    get teacher(): string { return this._teacherString }
+    get id(): number { return this._id }
+    get status(): string { return this._status }
+    get done(): boolean { return this._done }
+    get cancelled(): boolean {
+        if (this._status == "booked")
+            return false
+        else
+            return true
+    }
+    get userID(): number { return this._userID}
+
+
+    constructor(id: number, userID: number, courseID: number, date: string, slot: number, status: string, done: boolean, subjectID: number, teacherID: number, subjectString: string, teacherString: string){
         this._id = id
         this._userID = userID
         this._courseID = courseID
         this._date = date
+        this._slot = slot
         this._status = status
         this._done = done
         this._subjectID = subjectID
         this._teacherID = teacherID
+        this._subjectString = subjectString
+        this._teacherString = teacherString
     }
 }
