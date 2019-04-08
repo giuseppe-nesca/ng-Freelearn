@@ -55,7 +55,7 @@ export class BookingComponent implements OnInit {
   slotFormGroup: FormGroup
 
   todayDate: Date = new Date()
-  slotOption: boolean[] = [true, true, false]
+  slotOption: boolean[] = [true, true, true]
 
   subjects: Subject[] = []
   subjectOption: string[] = []
@@ -209,9 +209,7 @@ export class BookingComponent implements OnInit {
   }
   
   updateDate(event) {
-    let selectedTeacher: string = this.teacherFormGroup.controls['teacherCtrl'].value
-    let selectedTeacherID: number = this.teachers.map(t => t.surname).indexOf(selectedTeacher)
-    this.bookingService.getAviableSlots(selectedTeacherID + 1, this.dateSys)
+    this.bookingService.getAviableSlots(this.teacher.id, this.dateSys)
   }
 
   checkLessons(){
