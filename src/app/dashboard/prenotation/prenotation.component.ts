@@ -43,4 +43,23 @@ export class PrenotationComponent implements OnInit {
       return user.name + " " + user.surname
     }
   }
+
+  delete(lessonID: number){
+    this.prenotationService.deleteLesson(lessonID).subscribe(
+      res => {
+        this.prenotationService.getLessonsAdmin()
+      },
+      err => {
+        this.prenotationService.getLessonsAdmin()
+        switch (err.status){
+          case 400:
+            this.errorService.showErrorMessage("Lesson doesn't exist", "retry")
+            break
+          case 401:
+            this.errorService.authErrorMessage()
+            break
+        }
+      }
+    )
+  }
 }

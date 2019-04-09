@@ -11,6 +11,7 @@ export class PrenotationService {
 
   readonly _getLessonsUrl = "http://localhost:8080/admin/lessons"
   readonly _getUsersUrl = "http://localhost:8080/admin/users"
+  readonly _submitLessonURL = "http://localhost:8080/lessons/delete"
 
   private lessons$: BehaviorSubject<Lesson[]> = new BehaviorSubject(Array())
   private users$: BehaviorSubject<User[]> = new BehaviorSubject(Array())
@@ -61,5 +62,16 @@ export class PrenotationService {
        err => console.log(err)
      )
      return this.users$.asObservable()
+  }
+
+  deleteLesson(lessonID: number){
+    let urlEncodedRequest: string = `lessonID=${lessonID}`
+    return this.httpClient.post(this._submitLessonURL,
+      urlEncodedRequest,
+      {
+      headers: new HttpHeaders({ 'Content-Type':  'application/x-www-form-urlencoded' }),
+      withCredentials: true
+      }
+    )
   }
 }

@@ -2,6 +2,7 @@
   <h3 mat-subheader>Prenotazioni (admin)</h3>
   <mat-list-item *ngFor="let less of lessons$ | async">
     <mat-divider></mat-divider>
+    <button mat-button *ngIf="!less.cancelled && !less.done" (click)="delete(less.id)">Cancella</button>
     <p mat-line>E' stata prenotata una lezione da <b>{{getUser(less.userID)}}</b> di <b>{{less.subject}}</b> con il docente <b>{{less.teacher}}</b></p>
     <p mat-line>In data: <b>{{less.date}}</b>, Slot: <b>{{less.slot}}</b>
       Status:

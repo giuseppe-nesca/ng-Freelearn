@@ -1,3 +1,31 @@
-<p>
-  subjects works!
-</p>
+<mat-list>
+  <p>Inserisci una nuova materia</p>
+  <mat-list-item>
+    <form>
+      <mat-form-field>
+        <input matInput placeholder="Inserisci nome materia" [(ngModel)]="subjectInsertName" name="valueInsertName" required>
+      </mat-form-field>
+      <button mat-button (click)="insert()">Inserisci</button>
+    </form>
+  </mat-list-item>
+  <p>Elimina una materia </p>
+  <mat-list-item>
+    <form [formGroup]="subjectFormGroup">
+      <mat-form-field>
+        <input matInput placeholder="Inserisci nome materia" formControlName="subjectCtrl"
+          [matAutocomplete]="subjectAuto" required>
+        <mat-autocomplete #subjectAuto="matAutocomplete">
+          <mat-option *ngFor="let sub of subjectFilteredOptions | async" [value]="sub">
+            {{sub}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <button mat-button (click)="delete()">Elimina</button>
+    </form>
+  </mat-list-item>
+  <h3 mat-subheader>Materie</h3>
+  <mat-list-item *ngFor="let sub of subjects$ | async">
+    <mat-divider></mat-divider>
+    <p mat-line><b>{{sub.name}}</b></p>
+  </mat-list-item>
+</mat-list>

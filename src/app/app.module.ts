@@ -14,7 +14,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainNavComponent } from './dashboard/main-nav/main-nav.component';
 import { HistoryComponent } from './dashboard/history/history.component';
 import { PrenotationComponent } from './dashboard/prenotation/prenotation.component';
-import { SubjectsComponent } from './dashboard/subjects/subjects.component'
+import { SubjectsComponent } from './dashboard/subjects/subjects.component';
+import { TeachersComponent } from './dashboard/teachers/teachers.component'
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { SubjectsComponent } from './dashboard/subjects/subjects.component'
     PrenotationComponent,
     SubmitDialogComponent,
     PrenotationComponent,
-    SubjectsComponent
+    SubjectsComponent,
+    TeachersComponent
   ],
   imports: [
     BrowserModule,
