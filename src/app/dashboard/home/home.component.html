@@ -1,3 +1,15 @@
 <h1>Welcome {{(user$ | async).name}} {{(user$ | async).surname}}</h1>
 <p>Your email: {{(user$ | async).email}}</p>
 <p>Your role: {{(user$ | async).role}}</p>
+
+<mat-list>
+    <h3 mat-subheader>Prenotazioni Attive</h3>
+    <div *ngFor="let less of lessons$ | async">
+        <mat-list-item *ngIf="less.status == 'booked' && !less.done">
+            <mat-divider></mat-divider>
+            <p mat-line><b>{{less.subject}}</b></p>
+            <p mat-line>{{less.teacher}}</p>
+            <p mat-line>{{less.date}}, Slot: {{less.slot}}</p>
+        </mat-list-item>
+    </div>
+</mat-list>
