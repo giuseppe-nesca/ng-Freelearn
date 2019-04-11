@@ -30,6 +30,18 @@ export class TeachersComponent implements OnInit {
   constructor(private teachersService: TeachersService, private _formBuilder: FormBuilder, public dialog: MatDialog, private errorService: ErrorService, private router: Router) { }
 
   ngOnInit() {
+    this.teachers$ = this.teachersService.getTeachers()
+
+    this._initTeachers()
+
+    this.teachersService.getTeachers().subscribe(
+      (res: Teacher[]) => {
+        this.teachers = res
+        this.teacherOption.splice(0, this.teacherOption.length)
+        res.forEach( x => this.teacherOption.push(x.name, x.surname))
+        this._initTeachers()
+      }
+    )
   }
 
   private _initTeachers(){
@@ -57,4 +69,24 @@ export class TeachersComponent implements OnInit {
      return options.filter(option => option.toLowerCase().includes(filterValue))
   }
 
+  insert(){
+    if (this.teacherInsertName && this.teacherInsertSurname){
+      this.teachersService.insertTeacherRequest(this.teacherInsertName, this.teacherInsertSurname).subscribe(
+        res => {
+          console.log(res)
+          this.errorService.showErrorMessage("Teacher correctly added!")
+          this.teachersService.getTeachers()
+          this.teacherInsertName = ""
+          this.teacherInsertSurname = ""
+        },
+        err => {
+          console.log(err)
+          this.errorService.showErrorMessage("Teacher already exist!", "retry")
+          this.teachersService.getTeachers()
+        }
+      )
+    } else {
+      this.errorService.showErrorMessage("Please insert a valid teacher", "retry")
+    }
+  }
 }

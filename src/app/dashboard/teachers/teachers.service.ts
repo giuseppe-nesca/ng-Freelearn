@@ -28,7 +28,7 @@ export class TeachersService {
     return this.teachers$.asObservable()
   }
 
-  insertTeacherRequest(teacherName, teacherSurname){
+  insertTeacherRequest(teacherName: string, teacherSurname: string){
     let urlEncodedRequest: string = `teacherSurname=${teacherSurname}&teacherName=${teacherName}`
     return this.httpClient.post(this._submitTeacherURL,
         urlEncodedRequest,

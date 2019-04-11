@@ -11,7 +11,7 @@
   <h3 mat-subheader>Materie</h3>
   <mat-list-item *ngFor="let sub of subjects$ | async">
     <mat-divider></mat-divider>
-    <button mat-button (click)="delete(less.id)">Cancella</button>
-    <p mat-line><b>{{sub.name}}</b></p>
+    <button mat-button (click)="delete(sub.id)">Cancella</button>
+    <p mat-line>{{sub.name}}</p>
   </mat-list-item>
 </mat-list>

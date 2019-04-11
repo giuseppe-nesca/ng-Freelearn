@@ -79,14 +79,14 @@ export class SubjectsComponent implements OnInit {
           console.log(res)
           this.errorService.showErrorMessage("Subject correctly added!")
           this.subjectsService.getSubjects()
+          this.subjectInsertName = ""
         },
         err => {
           console.log(err)
           this.errorService.showErrorMessage("Subject already exist!", "retry")
           this.subjectsService.getSubjects()
         }
-    )
-    this.subjectInsertName = ""
+      )
     } else {
       this.errorService.showErrorMessage("Please insert a valid subject", "retry")
     }
