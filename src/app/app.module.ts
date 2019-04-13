@@ -15,7 +15,8 @@ import { MainNavComponent } from './dashboard/main-nav/main-nav.component';
 import { HistoryComponent } from './dashboard/history/history.component';
 import { PrenotationComponent } from './dashboard/prenotation/prenotation.component';
 import { SubjectsComponent } from './dashboard/subjects/subjects.component';
-import { TeachersComponent } from './dashboard/teachers/teachers.component'
+import { TeachersComponent } from './dashboard/teachers/teachers.component';
+import { CoursesComponent } from './dashboard/courses/courses.component'
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { TeachersComponent } from './dashboard/teachers/teachers.component'
     SubmitDialogComponent,
     PrenotationComponent,
     SubjectsComponent,
-    TeachersComponent
+    TeachersComponent,
+    CoursesComponent
   ],
   imports: [
     BrowserModule,
