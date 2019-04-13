@@ -10,9 +10,11 @@ import { Router } from '@angular/router';
 })
 export class UserService {
 
-  readonly _loginUrl: string = "http://localhost:8080/login"
-  readonly _userInfoUrl: string = "http://localhost:8080/userinfo"
-  readonly _userLogout: string = "http://localhost:8080/logout"
+  readonly _baseUrl: string = "http://localhost:8080/tweb"
+
+  readonly _loginUrl: string = this._baseUrl + "/login"
+  readonly _userInfoUrl: string = this._baseUrl + "/userinfo"
+  readonly _userLogout: string = this._baseUrl + "/logout"
 
   private user$ = new BehaviorSubject<User>(new User(-1, 'John', 'Doe', 'prova@email.it', 'utente'))
 

@@ -9,10 +9,12 @@ import { Teacher } from 'src/app/model/teacher';
 })
 export class BookingService {
 
-  readonly _getSubjectsUrl = "http://localhost:8080/subjects/getSubjects"
-  readonly _getTeachersUrl = "http://localhost:8080/teachers/getTeacher"
-  readonly _getTeacherAviablilityUrl = "http://localhost:8080/teacher/isAviable"
-  readonly _submitBookingUrl = "http://localhost:8080/booking"
+  readonly _baseUrl: string = "http://localhost:8080/tweb"
+
+  readonly _getSubjectsUrl = this._baseUrl + "/subjects/getSubjects"
+  readonly _getTeachersUrl = this._baseUrl + "/teachers/getTeacher"
+  readonly _getTeacherAviablilityUrl = this._baseUrl + "/teacher/isAviable"
+  readonly _submitBookingUrl = this._baseUrl + "/booking"
 
   private subjects$: BehaviorSubject<Subject[]> = new BehaviorSubject(new Array(new Subject(-1, "")))
   private teachers$: BehaviorSubject<Teacher[]> = new BehaviorSubject(new Array(new Teacher(-1, "", "")))

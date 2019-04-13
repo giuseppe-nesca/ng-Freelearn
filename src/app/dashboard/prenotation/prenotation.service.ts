@@ -9,9 +9,11 @@ import { User } from 'src/app/model/user';
 })
 export class PrenotationService {
 
-  readonly _getLessonsUrl = "http://localhost:8080/admin/lessons"
-  readonly _getUsersUrl = "http://localhost:8080/admin/users"
-  readonly _submitLessonURL = "http://localhost:8080/lessons/delete"
+  readonly _baseUrl: string = "http://localhost:8080/tweb"
+
+  readonly _getLessonsUrl = this._baseUrl + "/admin/lessons"
+  readonly _getUsersUrl = this._baseUrl + "/admin/users"
+  readonly _submitLessonURL = this._baseUrl + "/lessons/delete"
 
   private lessons$: BehaviorSubject<Lesson[]> = new BehaviorSubject(Array())
   private users$: BehaviorSubject<User[]> = new BehaviorSubject(Array())

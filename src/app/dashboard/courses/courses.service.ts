@@ -8,7 +8,9 @@ import { Course } from 'src/app/model/course';
 })
 export class CoursesService {
 
-  readonly _getCoursesUrl = "http://localhost:8080/courses/getCourses"
+  readonly _baseUrl: string = "http://localhost:8080/tweb"
+
+  readonly _getCoursesUrl = this._baseUrl + "/courses/getCourses"
   
   private courses$: BehaviorSubject<Course[]> = new BehaviorSubject(new Array(new Course(-1, -1, "", "", -1, "")))
 

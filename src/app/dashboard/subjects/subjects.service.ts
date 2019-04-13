@@ -8,8 +8,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class SubjectsService {
 
-  readonly _getSubjectsUrl = "http://localhost:8080/subjects/getSubjects"
-  readonly _submitSubjectURL = "http://localhost:8080/admin/subject/insert"
+  readonly _baseUrl: string = "http://localhost:8080/tweb"
+
+  readonly _getSubjectsUrl = this._baseUrl + "/subjects/getSubjects"
+  readonly _submitSubjectURL = this._baseUrl + "/admin/subject/insert"
 
   private subjects$: BehaviorSubject<Subject[]> = new BehaviorSubject(new Array(new Subject(-1, "")))
 

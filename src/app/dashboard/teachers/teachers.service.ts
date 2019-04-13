@@ -8,8 +8,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class TeachersService {
 
-  readonly _getTeacherUrl = "http://localhost:8080/teachers/getTeacher"
-  readonly _submitTeacherURL = "http://localhost:8080/admin/teacher/insert"
+  readonly _baseUrl: string = "http://localhost:8080/tweb"
+
+  readonly _getTeacherUrl = this._baseUrl + "/teachers/getTeacher"
+  readonly _submitTeacherURL = this._baseUrl + "/admin/teacher/insert"
 
   private teachers$: BehaviorSubject<Teacher[]> = new BehaviorSubject(new Array(new Teacher(-1, "", "")))
 
