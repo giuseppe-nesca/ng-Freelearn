@@ -1,3 +1,8 @@
-<p>
-  courses works!
-</p>
+<mat-list>
+  <h3 mat-subheader>Corsi</h3>
+  <mat-list-item *ngFor="let c of courses$ | async">
+    <mat-divider></mat-divider>
+    <button mat-button (click)="delete(tea.id)">Cancella</button>
+    <p mat-line>L'insegnante <b>{{c.teacherSurname}} {{c.teacherName}}</b> è assegnato a <b>{{c.subjectName}}</b></p>
+  </mat-list-item>
+</mat-list>

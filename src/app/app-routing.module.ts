@@ -9,6 +9,7 @@ import { HistoryComponent } from './dashboard/history/history.component';
 import { PrenotationComponent } from './dashboard/prenotation/prenotation.component';
 import { SubjectsComponent } from './dashboard/subjects/subjects.component';
 import { TeachersComponent } from './dashboard/teachers/teachers.component';
+import { CoursesComponent } from './dashboard/courses/courses.component';
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
       { path: "prenotation", component: PrenotationComponent },
       { path: "subjects", component: SubjectsComponent },
       { path: "teachers", component: TeachersComponent },
+      { path: "courses", component: CoursesComponent},
       { path: "", redirectTo: "home", pathMatch: "full" }
     ]
   },

@@ -16,7 +16,7 @@ import { HistoryComponent } from './dashboard/history/history.component';
 import { PrenotationComponent } from './dashboard/prenotation/prenotation.component';
 import { SubjectsComponent } from './dashboard/subjects/subjects.component';
 import { TeachersComponent } from './dashboard/teachers/teachers.component';
-import { CoursesComponent } from './dashboard/courses/courses.component'
+import { CoursesComponent } from './dashboard/courses/courses.component';
 
 @NgModule({
   declarations: [
