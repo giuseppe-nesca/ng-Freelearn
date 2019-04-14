@@ -15,6 +15,7 @@ export class CoursesService {
   readonly _getSubjectsUrl = this.global._baseUrl + "/subjects/getSubjects"
   readonly _getTeachersUrl = this.global._baseUrl + "/teachers/getTeacher"
   readonly _submitCourseUrl = this.global._baseUrl + "/admin/course/insert"
+  readonly _deleteCourseUrl = this.global._baseUrl + "/admin/course/delete"
   
   private courses$: BehaviorSubject<Course[]> = new BehaviorSubject(new Array(new Course(-1, -1, "", "", -1, "")))
   private subjects$: BehaviorSubject<Subject[]> = new BehaviorSubject(new Array(new Subject(-1, "")))
@@ -69,6 +70,18 @@ export class CoursesService {
         headers: new HttpHeaders({ 'Content-Type':  'application/x-www-form-urlencoded' }),
         withCredentials: true,
         responseType: 'text'
+      }
+    )
+  }
+
+  deleteCourse(courseID: number){
+    let urlEncodedRequest: string = `courseID=${courseID}`
+    return this.httpClient.post(this._deleteCourseUrl,
+      urlEncodedRequest,
+      {
+      headers: new HttpHeaders({ 'Content-Type':  'application/x-www-form-urlencoded' }),
+      withCredentials: true,
+      responseType: "text"
       }
     )
   }

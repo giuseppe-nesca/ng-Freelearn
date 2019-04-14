@@ -142,4 +142,24 @@ export class CoursesComponent implements OnInit {
       this.errorService.showErrorMessage("Please insert a valid subject and a valid teacher", "retry")
     }
   }
+
+  delete(courseID: number){
+    this.coursesService.deleteCourse(courseID).subscribe(
+      res => {
+        this.coursesService.getCourses()
+        this.errorService.openSnackBar("Course correctly deleted!", "ok")
+      },
+      (err: HttpErrorResponse) => {
+        this.coursesService.getCourses()
+        switch (err.status){
+          case 400:
+            this.errorService.showErrorMessage(err.error, "retry")
+            break;
+          case 401:
+            this.errorService.authErrorMessage()
+            break;
+        }
+      }
+    )
+  }
 }
