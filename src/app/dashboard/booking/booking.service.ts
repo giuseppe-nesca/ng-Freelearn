@@ -62,7 +62,7 @@ export class BookingService {
       return this.aviableSlots$.asObservable()
     } else {
       if (!id || !date){
-        throwError(new Error("bad parameters")) //TODO
+        throwError(new Error("bad parameters"))
         return
       }
     }

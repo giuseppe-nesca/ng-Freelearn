@@ -256,24 +256,6 @@ export class SubmitDialogComponent implements OnInit {
       this.error = false
       this.message = this.data.request.request
     }
-
-    // OLD
-    // this.data.request.subscribe(
-    //   (res: Observable<any>) => {
-    //     console.log("dialog", res)
-    //     this.error = false
-    //   },
-    //   (err: HttpErrorResponse) => {
-    //     console.log("dialog", err)
-    //     // this.errorService.showErrorMessage(err.error)
-    //     switch (err.status) {
-    //       case 401:
-    //         this.router.navigateByUrl('/login')
-    //     }
-    //     this.error = true
-    //     this.errorMessage = err.error
-    //   }
-    // )
   }
 
   onNoClick(): void {
