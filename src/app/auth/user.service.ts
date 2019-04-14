@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class UserService {
 
-  readonly _baseUrl: string = "http://localhost:8080/tweb"
+  readonly _baseUrl: string = "http://localhost:8080"
 
   readonly _loginUrl: string = this._baseUrl + "/login"
   readonly _userInfoUrl: string = this._baseUrl + "/userinfo"

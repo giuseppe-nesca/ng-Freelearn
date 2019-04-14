@@ -9,7 +9,7 @@ import { User } from 'src/app/model/user';
 })
 export class PrenotationService {
 
-  readonly _baseUrl: string = "http://localhost:8080/tweb"
+  readonly _baseUrl: string = "http://localhost:8080"
 
   readonly _getLessonsUrl = this._baseUrl + "/admin/lessons"
   readonly _getUsersUrl = this._baseUrl + "/admin/users"

@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class SubjectsService {
 
-  readonly _baseUrl: string = "http://localhost:8080/tweb"
+  readonly _baseUrl: string = "http://localhost:8080"
 
   readonly _getSubjectsUrl = this._baseUrl + "/subjects/getSubjects"
   readonly _submitSubjectURL = this._baseUrl + "/admin/subject/insert"

@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class HistoryService {
 
-  readonly _baseUrl: string = "http://localhost:8080/tweb"
+  readonly _baseUrl: string = "http://localhost:8080"
 
   readonly _getLessonsURL = this._baseUrl + "/lessons/user"
   readonly _submitLessonURL = this._baseUrl + "/lessons/delete"

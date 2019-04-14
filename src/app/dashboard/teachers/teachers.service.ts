@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class TeachersService {
 
-  readonly _baseUrl: string = "http://localhost:8080/tweb"
+  readonly _baseUrl: string = "http://localhost:8080"
 
   readonly _getTeacherUrl = this._baseUrl + "/teachers/getTeacher"
   readonly _submitTeacherURL = this._baseUrl + "/admin/teacher/insert"

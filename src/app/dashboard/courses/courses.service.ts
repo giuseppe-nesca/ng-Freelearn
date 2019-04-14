@@ -8,7 +8,7 @@ import { Course } from 'src/app/model/course';
 })
 export class CoursesService {
 
-  readonly _baseUrl: string = "http://localhost:8080/tweb"
+  readonly _baseUrl: string = "http://localhost:8080"
 
   readonly _getCoursesUrl = this._baseUrl + "/courses/getCourses"
   
