@@ -2,20 +2,19 @@ import { Injectable } from '@angular/core';
 import { Lesson } from 'src/app/model/lesson';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { Global } from 'src/app/model/global';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HistoryService {
 
-  readonly _baseUrl: string = "http://localhost:8080"
-
-  readonly _getLessonsURL = this._baseUrl + "/lessons/user"
-  readonly _submitLessonURL = this._baseUrl + "/lessons/delete"
+  readonly _getLessonsURL = this.global._baseUrl + "/lessons/user"
+  readonly _submitLessonURL = this.global._baseUrl + "/lessons/delete"
 
   private lessons$: BehaviorSubject<Lesson[]> = new BehaviorSubject(new Array())
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private global: Global, private httpClient: HttpClient) { }
 
   getLessons(){
     this.httpClient.get(

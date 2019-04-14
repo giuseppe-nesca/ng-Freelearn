@@ -2,20 +2,19 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Teacher } from 'src/app/model/teacher';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Global } from 'src/app/model/global';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeachersService {
 
-  readonly _baseUrl: string = "http://localhost:8080"
-
-  readonly _getTeacherUrl = this._baseUrl + "/teachers/getTeacher"
-  readonly _submitTeacherURL = this._baseUrl + "/admin/teacher/insert"
+  readonly _getTeacherUrl = this.global._baseUrl + "/teachers/getTeacher"
+  readonly _submitTeacherURL = this.global._baseUrl + "/admin/teacher/insert"
 
   private teachers$: BehaviorSubject<Teacher[]> = new BehaviorSubject(new Array(new Teacher(-1, "", "")))
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private global:Global, private httpClient: HttpClient) { }
 
   getTeachers(){
     this.httpClient.get(this._getTeacherUrl).subscribe(

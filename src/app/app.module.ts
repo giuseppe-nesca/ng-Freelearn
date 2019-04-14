@@ -17,6 +17,7 @@ import { PrenotationComponent } from './dashboard/prenotation/prenotation.compon
 import { SubjectsComponent } from './dashboard/subjects/subjects.component';
 import { TeachersComponent } from './dashboard/teachers/teachers.component';
 import { CoursesComponent } from './dashboard/courses/courses.component';
+import { Global } from './model/global';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,9 @@ import { CoursesComponent } from './dashboard/courses/courses.component';
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    Global
+  ],
   entryComponents: [
     SubmitDialogComponent
   ],

@@ -4,21 +4,20 @@ import {map} from 'rxjs/operators'
 import { User } from '../model/user';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { Global } from '../model/global';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  readonly _baseUrl: string = "http://localhost:8080"
-
-  readonly _loginUrl: string = this._baseUrl + "/login"
-  readonly _userInfoUrl: string = this._baseUrl + "/userinfo"
-  readonly _userLogout: string = this._baseUrl + "/logout"
+  readonly _loginUrl: string = this.global._baseUrl + "/login"
+  readonly _userInfoUrl: string = this.global._baseUrl + "/userinfo"
+  readonly _userLogout: string = this.global._baseUrl + "/logout"
 
   private user$ = new BehaviorSubject<User>(new User(-1, 'John', 'Doe', 'prova@email.it', 'utente'))
 
-  constructor(private httpClient: HttpClient, private router: Router) { }
+  constructor(private global: Global, private httpClient: HttpClient, private router: Router) { }
 
   getUser() {
     this.httpClient.get(

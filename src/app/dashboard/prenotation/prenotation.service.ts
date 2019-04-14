@@ -3,22 +3,21 @@ import { BehaviorSubject } from 'rxjs';
 import { Lesson } from 'src/app/model/lesson';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from 'src/app/model/user';
+import { Global } from 'src/app/model/global';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PrenotationService {
 
-  readonly _baseUrl: string = "http://localhost:8080"
-
-  readonly _getLessonsUrl = this._baseUrl + "/admin/lessons"
-  readonly _getUsersUrl = this._baseUrl + "/admin/users"
-  readonly _submitLessonURL = this._baseUrl + "/lessons/delete"
+  readonly _getLessonsUrl = this.global._baseUrl + "/admin/lessons"
+  readonly _getUsersUrl = this.global._baseUrl + "/admin/users"
+  readonly _submitLessonURL = this.global._baseUrl + "/lessons/delete"
 
   private lessons$: BehaviorSubject<Lesson[]> = new BehaviorSubject(Array())
   private users$: BehaviorSubject<User[]> = new BehaviorSubject(Array())
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private global: Global, private httpClient: HttpClient) { }
 
   getLessonsAdmin(){
     this.httpClient.get(

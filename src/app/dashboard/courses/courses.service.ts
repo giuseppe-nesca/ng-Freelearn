@@ -2,19 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Course } from 'src/app/model/course';
+import { Global } from 'src/app/model/global';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
 
-  readonly _baseUrl: string = "http://localhost:8080"
-
-  readonly _getCoursesUrl = this._baseUrl + "/courses/getCourses"
+  readonly _getCoursesUrl = this.global._baseUrl + "/courses/getCourses"
   
   private courses$: BehaviorSubject<Course[]> = new BehaviorSubject(new Array(new Course(-1, -1, "", "", -1, "")))
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private global: Global, private httpClient: HttpClient) { }
 
   getCourses(){
     this.httpClient.get(this._getCoursesUrl).subscribe(
