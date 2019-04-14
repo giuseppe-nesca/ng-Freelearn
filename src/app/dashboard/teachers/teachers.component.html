@@ -1,20 +1,20 @@
 <mat-list>
-  <p>Inserisci un nuovo professore</p>
+  <p>Submit a new teacher</p>
   <mat-list-item>
     <form>
       <mat-form-field>
-        <input matInput placeholder="Inserisci nome professore" [(ngModel)]="teacherInsertName" name="valueInsertName" required>
+        <input matInput placeholder="Enter teacher's name" [(ngModel)]="teacherInsertName" name="valueInsertName" required>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Inserisci cognome professore" [(ngModel)]="teacherInsertSurname" name="valueInsertSurname" required>
+        <input matInput placeholder="Enter teacher's surname" [(ngModel)]="teacherInsertSurname" name="valueInsertSurname" required>
       </mat-form-field>
-      <button mat-button (click)="insert()">Inserisci</button>
+      <button mat-button (click)="insert()">Insert</button>
     </form>
   </mat-list-item>
-  <h3 mat-subheader>Professori</h3>
+  <h3 mat-subheader>Teachers (Admin)</h3>
   <mat-list-item *ngFor="let tea of teachers$ | async">
     <mat-divider></mat-divider>
-    <button mat-button (click)="delete(tea.id)">Cancella</button>
+    <button mat-button (click)="delete(tea.id)">Delete</button>
     <p mat-line>{{tea.surname}}, {{tea.name}}</p>
   </mat-list-item>
 </mat-list>

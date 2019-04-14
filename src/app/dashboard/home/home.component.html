@@ -3,7 +3,7 @@
 <p>Your role: {{(user$ | async).role}}</p>
 
 <mat-list>
-    <h3 mat-subheader>Prenotazioni Attive</h3>
+    <h3 mat-subheader>Booked lessons</h3>
     <div *ngFor="let less of lessons$ | async">
         <mat-list-item *ngIf="less.status == 'booked' && !less.done">
             <mat-divider></mat-divider>

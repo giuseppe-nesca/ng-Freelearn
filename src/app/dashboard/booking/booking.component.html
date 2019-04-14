@@ -2,9 +2,9 @@
 (selectionChange)="selectionChange($event)">
   <mat-step [stepControl]="subjectFormGroup">
     <form [formGroup]="subjectFormGroup">
-      <ng-template matStepLabel>Scegli la materia</ng-template>
+      <ng-template matStepLabel>Choose subject</ng-template>
       <mat-form-field>
-        <input matInput placeholder="Inserisci la materia" formControlName="subjectCtrl" [matAutocomplete]="subjectAuto" required>
+        <input matInput placeholder="Insert subject" formControlName="subjectCtrl" [matAutocomplete]="subjectAuto" required>
         <mat-autocomplete #subjectAuto="matAutocomplete">
           <mat-option *ngFor="let option of subjectFilteredOptions | async" [value]="option">
             {{option}}
@@ -18,9 +18,9 @@
   </mat-step>
   <mat-step [stepControl]="teacherFormGroup">
     <form [formGroup]="teacherFormGroup">
-      <ng-template matStepLabel>Scegli il professore</ng-template>
+      <ng-template matStepLabel>Choose teacher</ng-template>
       <mat-form-field>
-        <input matInput placeholder="Inserisci il professore" formControlName="teacherCtrl" [matAutocomplete]="teacherAuto" required>
+        <input matInput placeholder="Insert teacher" formControlName="teacherCtrl" [matAutocomplete]="teacherAuto" required>
         <mat-autocomplete #teacherAuto="matAutocomplete">
           <mat-option *ngFor="let option of teacherFilteredOptions | async" [value]="option">
             {{option}}
@@ -35,18 +35,18 @@
   </mat-step>
    <mat-step [stepControl]="lessonFormGroup">
     <form [formGroup]="lessonFormGroup">
-      <ng-template matStepLabel>Seleziona il turno</ng-template>
+      <ng-template matStepLabel>Choose Slot</ng-template>
       <mat-form-field>
-        <input matInput (ngModelChange)="updateDate($event)" [matDatepickerFilter]="dateFilter" [min] = "todayDate" formControlName="dateCtrl" [matDatepicker]="picker" placeholder="Scegli una data" required>
+        <input matInput (ngModelChange)="updateDate($event)" [matDatepickerFilter]="dateFilter" [min] = "todayDate" formControlName="dateCtrl" [matDatepicker]="picker" placeholder="Choose a date" required>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
       <br>
-      <label *ngIf="!(slotOption[0] || slotOption[1] || slotOption[2]) && date">Non esistono turni disponibili in questa data</label>
-      <mat-radio-group *ngIf="(slotOption[0] || slotOption[1] || slotOption[2]) && date" formControlName="slotCtrl" aria-label="Seleziona un turno" (click)="chosen = true">
-        <mat-radio-button [disabled]="!slotOption[0]" value="1">Turno 1</mat-radio-button>
-        <mat-radio-button [disabled]="!slotOption[1]" value="2">Turno 2</mat-radio-button>
-        <mat-radio-button [disabled]="!slotOption[2]" value="3">Turno 3</mat-radio-button>
+      <label *ngIf="!(slotOption[0] || slotOption[1] || slotOption[2]) && date">There are no slots available on this date</label>
+      <mat-radio-group *ngIf="(slotOption[0] || slotOption[1] || slotOption[2]) && date" formControlName="slotCtrl" aria-label="Choose a slot" (click)="chosen = true">
+        <mat-radio-button [disabled]="!slotOption[0]" value="1">Slot 1</mat-radio-button>
+        <mat-radio-button [disabled]="!slotOption[1]" value="2">Slot 2</mat-radio-button>
+        <mat-radio-button [disabled]="!slotOption[2]" value="3">Slot 3</mat-radio-button>
       </mat-radio-group>
       <div>
         <br>
@@ -56,12 +56,12 @@
     </form>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Riepilogo</ng-template>
-    <h1>Riepilogo selezioni:</h1>
-    <p>Materia: <b>{{subjectFormGroup.get("subjectCtrl").value}}</b></p>
-    <p>Professore: <b>{{teacherFormGroup.get("teacherCtrl").value}}</b></p>
-    <p>Data: <b>{{date}}</b></p>
-    <p>Turno: <b>{{slot}}</b></p>
+    <ng-template matStepLabel>Summary</ng-template>
+    <h1>Summary lesson</h1>
+    <p>Subject: <b>{{subjectFormGroup.get("subjectCtrl").value}}</b></p>
+    <p>Professor: <b>{{teacherFormGroup.get("teacherCtrl").value}}</b></p>
+    <p>Date: <b>{{date}}</b></p>
+    <p>Slot: <b>{{slot}}</b></p>
     <div>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button (click)="stepper.reset(); reset()">Reset</button>

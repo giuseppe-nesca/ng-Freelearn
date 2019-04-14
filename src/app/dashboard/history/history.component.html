@@ -1,13 +1,13 @@
 <mat-list>
-  <h3 mat-subheader>Prenotazioni</h3>
+  <h3 mat-subheader>Lessons</h3>
   <mat-list-item *ngFor="let less of lessons$ | async">
     <mat-divider></mat-divider>
-    <button mat-button *ngIf="!less.cancelled && !less.done" (click)="delete(less.id)">Cancella</button>
+    <button mat-button *ngIf="!less.cancelled && !less.done" (click)="delete(less.id)">Delete</button>
     <p mat-line><b>{{less.subject}}</b></p>
     <p mat-line>{{less.teacher}}</p>
     <p mat-line>{{less.date}}, Slot: {{less.slot}},
-      <label class="booked" *ngIf="less.status == 'booked' && !less.done">Prenotata</label>
-      <label class="done" *ngIf="less.done">Svolta</label>
-      <label class="cancelled" *ngIf="less.cancelled">Cancellata</label></p>
+      <label class="booked" *ngIf="less.status == 'booked' && !less.done">Booked</label>
+      <label class="done" *ngIf="less.done">Done</label>
+      <label class="cancelled" *ngIf="less.cancelled">Deleted</label></p>
   </mat-list-item>
 </mat-list>

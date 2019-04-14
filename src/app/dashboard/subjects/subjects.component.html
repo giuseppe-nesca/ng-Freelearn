@@ -1,17 +1,17 @@
 <mat-list>
-  <p>Inserisci una nuova materia</p>
+  <p>Submit a new subject</p>
   <mat-list-item>
     <form>
       <mat-form-field>
-        <input matInput placeholder="Inserisci nome materia" [(ngModel)]="subjectInsertName" name="valueInsertName" required>
+        <input matInput placeholder="Enter subject's name" [(ngModel)]="subjectInsertName" name="valueInsertName" required>
       </mat-form-field>
-      <button mat-button (click)="insert()">Inserisci</button>
+      <button mat-button (click)="insert()">Insert</button>
     </form>
   </mat-list-item>
-  <h3 mat-subheader>Materie</h3>
+  <h3 mat-subheader>Subjects (Admin)</h3>
   <mat-list-item *ngFor="let sub of subjects$ | async">
     <mat-divider></mat-divider>
-    <button mat-button (click)="delete(sub.id)">Cancella</button>
+    <button mat-button (click)="delete(sub.id)">Delete</button>
     <p mat-line>{{sub.name}}</p>
   </mat-list-item>
 </mat-list>
