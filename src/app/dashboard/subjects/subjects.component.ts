@@ -7,6 +7,7 @@ import { ErrorService } from 'src/app/error.service';
 import { startWith, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-subjects',
@@ -21,7 +22,6 @@ export class SubjectsComponent implements OnInit {
   }
 
   subjectInsertName: string = "";
-  subjectDeleteName: string = "";
 
   subjectFormGroup: FormGroup
   subjects$: Observable<Subject[]>
@@ -82,7 +82,6 @@ export class SubjectsComponent implements OnInit {
           this.subjectInsertName = ""
         },
         err => {
-          console.log(err)
           this.errorService.showErrorMessage("Subject already exist!", "retry")
           this.subjectsService.getSubjects()
         }
@@ -92,12 +91,24 @@ export class SubjectsComponent implements OnInit {
     }
   }
 
-  delete(){
-    if (this.subjectDeleteName){
-      // TODO
-    } else {
-      this.errorService.showErrorMessage("Please insert a valid subject", "retry")
-    }
+  delete(subjectID: number){
+    this.subjectsService.deleteSubject(subjectID).subscribe(
+      res => {
+        this.subjectsService.getSubjects()
+        this.errorService.openSnackBar("Subject correctly deleted!", "ok")
+      },
+      (err: HttpErrorResponse) => {
+        this.subjectsService.getSubjects()
+        switch (err.status){
+          case 400:
+            this.errorService.showErrorMessage(err.error, "retry")
+            break;
+          case 401:
+            this.errorService.authErrorMessage()
+            break;
+        }
+      }
+    )
   }
 
 }

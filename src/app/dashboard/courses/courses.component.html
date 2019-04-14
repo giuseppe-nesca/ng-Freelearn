@@ -1,6 +1,29 @@
-
-
 <mat-list>
+  <form>
+    <mat-list-item>
+      <ng-template matStepLabel>Scegli la materia</ng-template>
+      <mat-form-field [formGroup]="subjectFormGroup">
+        <input matInput placeholder="Inserisci la materia" formControlName="subjectCtrl" [matAutocomplete]="subjectAuto"
+          required>
+        <mat-autocomplete #subjectAuto="matAutocomplete">
+          <mat-option *ngFor="let option of subjectFilteredOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <ng-template matStepLabel>Scegli il professore</ng-template>
+      <mat-form-field [formGroup]="teacherFormGroup">
+        <input matInput placeholder="Inserisci il professore" formControlName="teacherCtrl"
+          [matAutocomplete]="teacherAuto" required>
+        <mat-autocomplete #teacherAuto="matAutocomplete">
+          <mat-option *ngFor="let option of teacherFilteredOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <button mat-button (click)="insert()">Inserisci</button>
+    </mat-list-item>
+  </form>
   <h3 mat-subheader>Corsi</h3>
   <mat-list-item *ngFor="let c of courses$ | async">
     <mat-divider></mat-divider>

@@ -11,6 +11,7 @@ export class TeachersService {
 
   readonly _getTeacherUrl = this.global._baseUrl + "/teachers/getTeacher"
   readonly _submitTeacherURL = this.global._baseUrl + "/admin/teacher/insert"
+  readonly _deleteTeachertUrl = this.global._baseUrl + "/admin/teacher/delete"
 
   private teachers$: BehaviorSubject<Teacher[]> = new BehaviorSubject(new Array(new Teacher(-1, "", "")))
 
@@ -38,6 +39,18 @@ export class TeachersService {
           withCredentials: true,
           responseType: 'text'
         }
+    )
+  }
+
+  deleteTeacher(teacherID: number){
+    let urlEncodedRequest: string = `teacherID=${teacherID}`
+    return this.httpClient.post(this._deleteTeachertUrl,
+      urlEncodedRequest,
+      {
+      headers: new HttpHeaders({ 'Content-Type':  'application/x-www-form-urlencoded' }),
+      withCredentials: true,
+      responseType: "text"
+      }
     )
   }
   

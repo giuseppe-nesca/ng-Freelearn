@@ -11,6 +11,7 @@ export class SubjectsService {
 
   readonly _getSubjectsUrl = this.global._baseUrl + "/subjects/getSubjects"
   readonly _submitSubjectURL = this.global._baseUrl + "/admin/subject/insert"
+  readonly _deleteSubjectUrl = this.global._baseUrl + "/admin/subject/delete"
 
   private subjects$: BehaviorSubject<Subject[]> = new BehaviorSubject(new Array(new Subject(-1, "")))
 
@@ -37,6 +38,18 @@ export class SubjectsService {
         headers: new HttpHeaders({ 'Content-Type':  'application/x-www-form-urlencoded' }),
         withCredentials: true,
         responseType: 'text'
+      }
+    )
+  }
+
+  deleteSubject(subjectID: number){
+    let urlEncodedRequest: string = `subjectID=${subjectID}`
+    return this.httpClient.post(this._deleteSubjectUrl,
+      urlEncodedRequest,
+      {
+      headers: new HttpHeaders({ 'Content-Type':  'application/x-www-form-urlencoded' }),
+      withCredentials: true,
+      responseType: "text"
       }
     )
   }

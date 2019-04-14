@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Teacher } from 'src/app/model/teacher';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-teachers',
@@ -89,4 +90,25 @@ export class TeachersComponent implements OnInit {
       this.errorService.showErrorMessage("Please insert a valid teacher", "retry")
     }
   }
+
+  delete(teacherID: number){
+    this.teachersService.deleteTeacher(teacherID).subscribe(
+      res => {
+        this.teachersService.getTeachers()
+        this.errorService.openSnackBar("Teacher correctly deleted!", "ok")
+      },
+      (err: HttpErrorResponse) => {
+        this.teachersService.getTeachers()
+        switch (err.status){
+          case 400:
+            this.errorService.showErrorMessage(err.error, "retry")
+            break;
+          case 401:
+            this.errorService.authErrorMessage()
+            break;
+        }
+      }
+    )
+  }
+
 }
