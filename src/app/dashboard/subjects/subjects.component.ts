@@ -7,7 +7,7 @@ import { ErrorService } from 'src/app/error.service';
 import { startWith, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-subjects',
@@ -43,6 +43,9 @@ export class SubjectsComponent implements OnInit {
         this.subjectOption.splice(0, this.subjectOption.length)
         res.forEach( x => this.subjectOption.push(x.name) )
         this._initSubjects()
+      },
+      (err: HttpErrorResponse) => {
+        this.errorService.showErrorMessage(err.error, "error")
       }
     )
   }
@@ -75,19 +78,17 @@ export class SubjectsComponent implements OnInit {
   insert(){
     if (this.subjectInsertName){
       this.subjectsService.insertSubjectRequest(this.subjectInsertName).subscribe(
-        res => {
-          console.log(res)
-          this.errorService.showErrorMessage("Subject correctly added!")
+        (res) => {
+          this.errorService.showErrorMessage("Subject inserted correctly")
           this.subjectsService.getSubjects()
           this.subjectInsertName = ""
         },
-        err => {
-          this.errorService.showErrorMessage("Subject already exist!", "retry")
-          this.subjectsService.getSubjects()
+        (err: HttpErrorResponse) => {
+          this.errorService.showErrorMessage(err.error, "error")
         }
       )
     } else {
-      this.errorService.showErrorMessage("Please insert a valid subject", "retry")
+      this.errorService.showErrorMessage("Please insert a valid subject", "ok")
     }
   }
 
@@ -95,18 +96,10 @@ export class SubjectsComponent implements OnInit {
     this.subjectsService.deleteSubject(subjectID).subscribe(
       res => {
         this.subjectsService.getSubjects()
-        this.errorService.openSnackBar("Subject correctly deleted!", "ok")
+        this.errorService.openSnackBar("Subject deleted correctly", "ok")
       },
       (err: HttpErrorResponse) => {
-        this.subjectsService.getSubjects()
-        switch (err.status){
-          case 400:
-            this.errorService.showErrorMessage(err.error, "retry")
-            break;
-          case 401:
-            this.errorService.authErrorMessage()
-            break;
-        }
+        this.errorService.showErrorMessage(err.error, "error")
       }
     )
   }

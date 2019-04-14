@@ -41,6 +41,9 @@ export class TeachersComponent implements OnInit {
         this.teacherOption.splice(0, this.teacherOption.length)
         res.forEach( x => this.teacherOption.push(x.name, x.surname))
         this._initTeachers()
+      },
+      (err: HttpErrorResponse) => {
+        this.errorService.showErrorMessage(err.error, "error")
       }
     )
   }
@@ -74,16 +77,13 @@ export class TeachersComponent implements OnInit {
     if (this.teacherInsertName && this.teacherInsertSurname){
       this.teachersService.insertTeacherRequest(this.teacherInsertName, this.teacherInsertSurname).subscribe(
         res => {
-          console.log(res)
-          this.errorService.showErrorMessage("Teacher correctly added!")
+          this.errorService.openSnackBar("Teacher correctly added!", "ok")
           this.teachersService.getTeachers()
           this.teacherInsertName = ""
           this.teacherInsertSurname = ""
         },
-        err => {
-          console.log(err)
-          this.errorService.showErrorMessage("Teacher already exist!", "retry")
-          this.teachersService.getTeachers()
+        (err: HttpErrorResponse) => {
+          this.errorService.showErrorMessage(err.error, "error")
         }
       )
     } else {
@@ -98,15 +98,7 @@ export class TeachersComponent implements OnInit {
         this.errorService.openSnackBar("Teacher correctly deleted!", "ok")
       },
       (err: HttpErrorResponse) => {
-        this.teachersService.getTeachers()
-        switch (err.status){
-          case 400:
-            this.errorService.showErrorMessage(err.error, "retry")
-            break;
-          case 401:
-            this.errorService.authErrorMessage()
-            break;
-        }
+        this.errorService.showErrorMessage(err.error, "error")
       }
     )
   }

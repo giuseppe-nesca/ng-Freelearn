@@ -174,8 +174,6 @@ export class BookingComponent implements OnInit {
     let message: string = "Sucessfully booked! Check your prenotations in history"
     this.bookingService.getBookRequest(this.teacher.id, this.subject.id, this.dateSys, + this.slot).subscribe(
       res => {
-        console.log("dialog", res)
-        // this.errorService.showErrorMessage("Booked")
         this.dialog.open(SubmitDialogComponent, {
           width: '250px',
           data: {
@@ -184,30 +182,15 @@ export class BookingComponent implements OnInit {
         })
       },
       (err: HttpErrorResponse) => {
-        console.log("dialog", err)
-        switch (err.status) {
-          case 401:
-            this.errorService.showErrorMessage("autentication failed")
-            this.router.navigateByUrl('/login')
-            break;
-          default:
-          this.dialog.open(SubmitDialogComponent, {
-            width: '250px',
-            data: {
-              request: { request: err.error, error: true }
-            }
-          })
-         }
+        this.errorService.showErrorMessage(err.error, "error"),
+        this.dialog.open(SubmitDialogComponent, {
+          width: '250px',
+          data: {
+            request: { request: err.error, error: true }
+          }
+        })
       }
     )
-
-
-
-    //OLD
-    // const dialogRef = this.dialog.open(SubmitDialogComponent, {
-    //   width: '250px',
-    //   data: {request: this.bookingService.getBookRequest(this.teacher.id, this.subject.id, this.dateSys, + this.slot)}
-    // })
   }
   
   updateDate(event) {
@@ -230,7 +213,6 @@ export class BookingComponent implements OnInit {
     <p *ngIf=!error>{{message}}</p>
   </div>
   <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">No Thanks</button>
     <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
   </div>
   `,
@@ -248,7 +230,6 @@ export class SubmitDialogComponent implements OnInit {
     private router: Router) {}
   
   ngOnInit() {
-    console.log("data: ", this.data )
     if (this.data.request.error) {
       this.error = true
       this.errorMessage = this.data.request.request

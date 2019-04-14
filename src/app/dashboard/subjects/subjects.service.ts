@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Subject } from 'src/app/model/subject';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Global } from 'src/app/model/global';
+import { ErrorService } from 'src/app/error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class SubjectsService {
 
   private subjects$: BehaviorSubject<Subject[]> = new BehaviorSubject(new Array(new Subject(-1, "")))
 
-  constructor(private global: Global, private httpClient: HttpClient) { }
+  constructor(private errorService: ErrorService, private global: Global, private httpClient: HttpClient) { }
 
   getSubjects() {
     this.httpClient.get(this._getSubjectsUrl).subscribe(
@@ -25,7 +26,9 @@ export class SubjectsService {
         obj.forEach(x => { subjects.push(new Subject(x.id, x.name)) })
         this.subjects$.next(subjects)
       },
-      err => { console.log(err) /*TODO*/ }
+      (err: HttpErrorResponse) => {
+        this.errorService.showErrorMessage(err.error, "error")
+      }
     )
     return this.subjects$.asObservable()
   }

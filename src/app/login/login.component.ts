@@ -4,6 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router'
 import { UserService } from '../auth/user.service';
 import { ErrorService } from '../error.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -34,15 +35,8 @@ export class LoginComponent implements OnInit {
     const response = this.userService.login(this.email.value, this.password.value)
     response.subscribe(
       res => { if(res) { this.rotuer.navigateByUrl("/dashboard") }},
-      err => {
-        const status: Number = err.status
-        switch(status){
-          case 401:
-            this.errorService.showErrorMessage("Wrong credentials", "try again")
-            break
-          default:
-            this.errorService.showErrorMessage("Server Error", "try again")
-        }
+      (err: HttpErrorResponse) => {
+        this.errorService.showErrorMessage(err.error, "error")
       }
     )
   }

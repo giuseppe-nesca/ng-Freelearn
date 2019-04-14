@@ -121,21 +121,13 @@ export class CoursesComponent implements OnInit {
     if (this.subjectFormGroup.valid && this.teacherFormGroup.valid){
       this.coursesService.insertCourseRequest(this.subject.id, this.teacher.id).subscribe(
         res => {
-          this.errorService.openSnackBar("Course sucesfully added", "ok")
+          this.errorService.showErrorMessage("Course inserted correctly")
           this.courses$ = this.coursesService.getCourses()
           this.subjectFormGroup.reset()
           this.teacherFormGroup.reset()
         },
         (err: HttpErrorResponse) => {
-          switch (err.status) {
-            case 401:
-              this.errorService.showErrorMessage("autentication failed")
-              this.router.navigateByUrl('/login')
-              break;
-            case 400:
-              this.errorService.showErrorMessage("Course Already exist!")
-              break;
-           }
+          this.errorService.showErrorMessage(err.error, "error")
         }
       )
     } else {
@@ -147,18 +139,10 @@ export class CoursesComponent implements OnInit {
     this.coursesService.deleteCourse(courseID).subscribe(
       res => {
         this.coursesService.getCourses()
-        this.errorService.openSnackBar("Course correctly deleted!", "ok")
+        this.errorService.openSnackBar("Course deleted correctly", "ok")
       },
       (err: HttpErrorResponse) => {
-        this.coursesService.getCourses()
-        switch (err.status){
-          case 400:
-            this.errorService.showErrorMessage(err.error, "retry")
-            break;
-          case 401:
-            this.errorService.authErrorMessage()
-            break;
-        }
+        this.errorService.showErrorMessage(err.error, "error")
       }
     )
   }

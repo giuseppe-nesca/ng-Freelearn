@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Lesson } from 'src/app/model/lesson';
 import { User } from 'src/app/model/user';
 import { map } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-prenotation',
@@ -33,7 +34,10 @@ export class PrenotationComponent implements OnInit {
           // @ts-ignore
           x.id, x.name, x.surname
         ))
-      })
+      }),
+      (err: HttpErrorResponse) => {
+        this.errorService.showErrorMessage(err.error, "error")
+      }
     )
   }
 
@@ -48,17 +52,10 @@ export class PrenotationComponent implements OnInit {
     this.prenotationService.deleteLesson(lessonID).subscribe(
       res => {
         this.prenotationService.getLessonsAdmin()
+        this.errorService.openSnackBar("Booking deleted correctly", "ok")
       },
-      err => {
-        this.prenotationService.getLessonsAdmin()
-        switch (err.status){
-          case 400:
-            this.errorService.showErrorMessage("Lesson doesn't exist", "retry")
-            break
-          case 401:
-            this.errorService.authErrorMessage()
-            break
-        }
+      (err: HttpErrorResponse) => {
+        this.errorService.showErrorMessage(err.error, "error")
       }
     )
   }

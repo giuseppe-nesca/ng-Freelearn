@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Lesson } from 'src/app/model/lesson';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Global } from 'src/app/model/global';
+import { ErrorService } from 'src/app/error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class HistoryService {
 
   private lessons$: BehaviorSubject<Lesson[]> = new BehaviorSubject(new Array())
 
-  constructor(private global: Global, private httpClient: HttpClient) { }
+  constructor(private errorService: ErrorService, private global: Global, private httpClient: HttpClient) { }
 
   getLessons(){
     this.httpClient.get(
@@ -35,7 +36,9 @@ export class HistoryService {
         })
         this.lessons$.next(lessons)
       },
-      err => console.log(err)
+      (err: HttpErrorResponse) => {
+        this.errorService.showErrorMessage(err.error, "error")
+      }
     )
     return this.lessons$.asObservable()
   }

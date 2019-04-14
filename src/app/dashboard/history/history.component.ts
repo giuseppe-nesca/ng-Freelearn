@@ -3,6 +3,7 @@ import { Lesson } from 'src/app/model/lesson';
 import { HistoryService } from './history.service';
 import { ErrorService } from 'src/app/error.service';
 import { Observable } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-history',
@@ -24,17 +25,10 @@ export class HistoryComponent implements OnInit {
     this.historyService.deleteLesson(lessonID).subscribe(
       res => {
         this.historyService.getLessons()
+        this.errorService.openSnackBar("Booking deleted correctly", "ok")
       },
-      err => {
-        this.historyService.getLessons()
-        switch (err.status){
-          case 400:
-            this.errorService.showErrorMessage("Lesson doesn't exist", "retry")
-            break
-          case 401:
-            this.errorService.authErrorMessage()
-            break
-        }
+      (err: HttpErrorResponse) => {
+        this.errorService.showErrorMessage(err.error, "error")
       }
     )
   }

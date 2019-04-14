@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { Subject } from 'src/app/model/subject';
 import { Teacher } from 'src/app/model/teacher';
 import { Global } from 'src/app/model/global';
+import { ErrorService } from 'src/app/error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class BookingService {
   private teachers$: BehaviorSubject<Teacher[]> = new BehaviorSubject(new Array(new Teacher(-1, "", "")))
   private aviableSlots$: BehaviorSubject<boolean[]> = new BehaviorSubject<boolean[]>(new Array(false, false, false))
   
-  constructor(private global: Global, private httpClient: HttpClient) { }
+  constructor(private errorService: ErrorService, private global: Global, private httpClient: HttpClient) { }
 
   getSubjects() {
     this.httpClient.get(this._getSubjectsUrl).subscribe(
@@ -29,7 +30,9 @@ export class BookingService {
         obj.forEach(x => { subjects.push(new Subject(x.id, x.name)) })
         this.subjects$.next(subjects)
       },
-      err => { console.log(err) /*TODO*/ }
+      (err: HttpErrorResponse) => {
+        this.errorService.showErrorMessage(err.error, "error")
+      }
     )
     return this.subjects$.asObservable()
   }
@@ -51,7 +54,9 @@ export class BookingService {
         obj.forEach(x => { teachers.push(new Teacher(x.id, x.name, x.surname)) })
         this.teachers$.next(teachers)
       },
-      err => { console.log(err) /*TODO*/ } 
+      (err: HttpErrorResponse) => {
+        this.errorService.showErrorMessage(err.error, "error")
+      }
     )
     return this.teachers$.asObservable()
   }
@@ -76,8 +81,11 @@ export class BookingService {
         withCredentials: true,
       }
     ).subscribe(
-      (res: boolean[]) => this.aviableSlots$.next(res)
-    ) //TODO handle errors
+      (res: boolean[]) => this.aviableSlots$.next(res),
+      (err: HttpErrorResponse) => {
+        this.errorService.showErrorMessage(err.error, "error")
+      }
+    )
     return this.aviableSlots$.asObservable()
   }
 
