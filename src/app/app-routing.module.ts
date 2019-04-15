@@ -17,15 +17,15 @@ const routes: Routes = [
   {
     path: "dashboard",
     component: DashboardComponent,
-    canActivate: [ AuthGuard, AuthGuardAdminService ],
+    canActivate: [ AuthGuard ],
     children: [
       { path: "home", component: HomeComponent },
       { path: "booking", component: BookingComponent },
       { path: "history", component: HistoryComponent },
-      { path: "prenotation", component: PrenotationComponent },
-      { path: "subjects", component: SubjectsComponent },
-      { path: "teachers", component: TeachersComponent },
-      { path: "courses", component: CoursesComponent},
+      { path: "prenotation", component: PrenotationComponent, canActivate: [ AuthGuardAdminService ] },
+      { path: "subjects", component: SubjectsComponent, canActivate: [ AuthGuardAdminService ] },
+      { path: "teachers", component: TeachersComponent, canActivate: [ AuthGuardAdminService ] },
+      { path: "courses", component: CoursesComponent, canActivate: [ AuthGuardAdminService ] },
       { path: "", redirectTo: "home", pathMatch: "full" }
     ]
   },
