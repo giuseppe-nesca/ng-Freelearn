@@ -10,13 +10,14 @@ import { PrenotationComponent } from './dashboard/prenotation/prenotation.compon
 import { SubjectsComponent } from './dashboard/subjects/subjects.component';
 import { TeachersComponent } from './dashboard/teachers/teachers.component';
 import { CoursesComponent } from './dashboard/courses/courses.component';
+import { AuthGuardAdminService } from './auth/auth-guard-admin.service';
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
   {
     path: "dashboard",
     component: DashboardComponent,
-    canActivate: [ AuthGuard ],
+    canActivate: [ AuthGuard, AuthGuardAdminService ],
     children: [
       { path: "home", component: HomeComponent },
       { path: "booking", component: BookingComponent },

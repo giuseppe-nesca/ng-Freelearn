@@ -14,6 +14,7 @@ export class UserService {
   readonly _loginUrl: string = this.global._baseUrl + "/login"
   readonly _userInfoUrl: string = this.global._baseUrl + "/userinfo"
   readonly _userLogout: string = this.global._baseUrl + "/logout"
+  readonly _adminRoleUrl: string = this.global._baseUrl + "/admin/role"
 
   private user$ = new BehaviorSubject<User>(new User(-1, 'John', 'Doe', 'prova@email.it', 'utente'))
 
@@ -46,6 +47,13 @@ export class UserService {
         this._loginUrl,
         { observe: 'response', withCredentials: true }
       ).pipe( map(res => res.status) )
+  }
+
+  isAdmin(){
+    return this.httpClient.get(
+      this._adminRoleUrl,
+      { observe: 'response', withCredentials: true }
+    ).pipe( map(res => res.status))
   }
 
   public login(email: string, password: string) {
