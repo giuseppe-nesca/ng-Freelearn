@@ -28,7 +28,7 @@ export class HistoryComponent implements OnInit {
         this.errorService.openSnackBar("Booking deleted correctly", "ok")
       },
       (err: HttpErrorResponse) => {
-        this.errorService.showErrorMessage(err.error, "error")
+        this.historyService.getLessons()
       }
     )
   }

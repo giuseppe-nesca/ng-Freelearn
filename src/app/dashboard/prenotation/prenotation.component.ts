@@ -55,7 +55,7 @@ export class PrenotationComponent implements OnInit {
         this.errorService.openSnackBar("Booking deleted correctly", "ok")
       },
       (err: HttpErrorResponse) => {
-        this.errorService.showErrorMessage(err.error, "error")
+        this.prenotationService.getLessonsAdmin()
       }
     )
   }
