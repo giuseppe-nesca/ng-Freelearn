@@ -149,9 +149,6 @@ export class BookingComponent implements OnInit {
   private selectionChange(event) {
     let selectedIndex: number = (event.selectedIndex)
     let previousIndex: number = event.previouslySelectedIndex
-    //TODO
-    // let selectedSubject: string = this.subjectFormGroup.controls['subjectCtrl'].value
-    // let selectedSubjectIndex: number = this.subjects.map(s => s.name).indexOf(selectedSubject)
     let selectedSubject: Subject = this.subject
     let selectedDate: string = this.lessonFormGroup.controls['dateCtrl'].value
     let selectedSlot: string = this.lessonFormGroup.controls['slotCtrl'].value
@@ -159,7 +156,6 @@ export class BookingComponent implements OnInit {
       switch(selectedIndex) {
         case 1: 
           this.bookingService.getTeachers(selectedSubject.id)
-          //this._initTeachers()
           break
       }
   }
