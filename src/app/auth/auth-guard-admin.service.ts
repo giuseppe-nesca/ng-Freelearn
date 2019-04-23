@@ -35,7 +35,6 @@ export class AuthGuardAdminService {
             break;
           default:
             console.log("server error: " + error.status + " " + error.statusText)
-            //TODO
             break;
         }
       }
